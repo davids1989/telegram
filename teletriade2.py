@@ -25,7 +25,7 @@ def listar_usuarios():
     cursor.close()
     return jsonify(usuarios)
 
-# Rota para criar um usuário
+# Rota para criar um usuário!
 @app.route('/api/usuarios', methods=['POST'])
 def criar_usuario():
     data = request.get_json()
