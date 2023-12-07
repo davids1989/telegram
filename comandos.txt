@@ -1,0 +1,29 @@
+979321 - Telegram > node teletriade.js - Parado
+
+cd /var/www/
+
+git clone https://github.com/davids1989/telegram.git
+
+cd telegram
+
+Verificar se o Python3 está instalado:
+python3 --version
+
+Se não estiver instalado, você pode instalá-lo usando o seguinte comando:
+sudo apt update
+sudo apt install python3
+
+Verificar se o Pip está instalado:
+pip3 --version
+
+Se não estiver instalado, você pode instalá-lo usando o seguinte comando:
+sudo apt install python3-pip
+
+Instalar o python-telegram-bot:
+pip3 install python-telegram-bot
+
+Instalar a dependencia do Mysql:
+pip install Flask pymysql
+
+Para executar o bot:
+python3 teletriade.py
