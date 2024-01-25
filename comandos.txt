@@ -4,6 +4,9 @@ cd /var/www/
 
 git clone https://github.com/davids1989/telegram.git
 
+# Atualiza o Git
+git pull https://github.com/davids1989/telegram.git
+
 cd telegram
 
 Verificar se o Python3 está instalado:

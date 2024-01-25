@@ -265,10 +265,9 @@ async def adicionar_comercial(update: Update, context: ContextTypes.DEFAULT_TYPE
 
 async def remover_suporte(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     # Verifica se a mensagem contém uma menção a um usuário
-    if update.message.entities and update.message.entities[0].type == "mention":
-        # Extrai o nome de usuário mencionado
-        mentioned_username = update.message.text[update.message.entities[0].offset + 1:update.message.entities[0].offset + update.message.entities[0].length]
-        
+    if update.message.reply_to_message and update.message.reply_to_message.from_user:
+        mentioned_username = update.message.reply_to_message.from_user.username
+
         async with httpx.AsyncClient() as client:
             response = await client.get('http://localhost:3002/api/usuarios/')
 
@@ -293,7 +292,8 @@ async def remover_suporte(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
             else:
                 await update.message.reply_text("Erro ao acessar a API de usuários.")
     else:
-        await update.message.reply_text("Você precisa mencionar um usuário para remover do grupo de suporte.")
+        await update.message.reply_text("Você precisa responder a uma mensagem mencionando o usuário para remover do grupo de suporte.")
+
 
 
 
