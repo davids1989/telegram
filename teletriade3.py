@@ -298,39 +298,132 @@ async def remover_suporte(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
 
 
 async def remover_financeiro(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    username = update.message.chat.username
-    if username in financeiro_group:
-        del financeiro_group[username]
-        await update.message.reply_text(f"Removido {username} do grupo financeiro.")
+    # Verifica se a mensagem contém uma menção a um usuário
+    if update.message.reply_to_message and update.message.reply_to_message.from_user:
+        mentioned_username = update.message.reply_to_message.from_user.username
+
+        async with httpx.AsyncClient() as client:
+            response = await client.get('http://localhost:3002/api/usuarios/')
+
+            if response.status_code == 200:
+                usuarios = response.json()
+
+                for usuario in usuarios:
+                    print("Username:", usuario['username'])
+                    if usuario['username'] == mentioned_username and usuario['grupo'] == 'financeiro_group':
+                        user_id = usuario['id']
+
+                        delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}')
+
+                        if delete_response.status_code == 200:
+                            await update.message.reply_text(f"Removido {mentioned_username} do grupo do financeiro.")
+                        else:
+                            await update.message.reply_text(f"Erro ao remover {mentioned_username} do grupo do financeiro.")
+                        break  # Parar a iteração após a exclusão
+
+                else:
+                    await update.message.reply_text(f"{mentioned_username} não está no grupo do financeiro.")
+            else:
+                await update.message.reply_text("Erro ao acessar a API de usuários.")
     else:
-        await update.message.reply_text("Você não está no grupo financeiro.")
+        await update.message.reply_text("Você precisa responder a uma mensagem mencionando o usuário para remover do grupo do financeiro.")
 
 
 async def remover_tecnicos(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    username = update.message.chat.username
-    if username in tecnicos_group:
-        del tecnicos_group[username]
-        await update.message.reply_text(f"Removido {username} do grupo de técnicos.")
+    # Verifica se a mensagem contém uma menção a um usuário
+    if update.message.reply_to_message and update.message.reply_to_message.from_user:
+        mentioned_username = update.message.reply_to_message.from_user.username
+
+        async with httpx.AsyncClient() as client:
+            response = await client.get('http://localhost:3002/api/usuarios/')
+
+            if response.status_code == 200:
+                usuarios = response.json()
+
+                for usuario in usuarios:
+                    print("Username:", usuario['username'])
+                    if usuario['username'] == mentioned_username and usuario['grupo'] == 'tecnicos_group':
+                        user_id = usuario['id']
+
+                        delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}')
+
+                        if delete_response.status_code == 200:
+                            await update.message.reply_text(f"Removido {mentioned_username} do grupo dos tecnicos.")
+                        else:
+                            await update.message.reply_text(f"Erro ao remover {mentioned_username} do grupo dos tecnicos.")
+                        break  # Parar a iteração após a exclusão
+
+                else:
+                    await update.message.reply_text(f"{mentioned_username} não está no grupo dos tecnicos.")
+            else:
+                await update.message.reply_text("Erro ao acessar a API de usuários.")
     else:
-        await update.message.reply_text("Você não está no grupo de técnicos.")
+        await update.message.reply_text("Você precisa responder a uma mensagem mencionando o usuário para remover do grupo dos tecnicos.")
+
 
 
 async def remover_fusao(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    username = update.message.chat.username
-    if username in fusao_group:
-        del fusao_group[username]
-        await update.message.reply_text(f"Removido {username} do grupo de fusão.")
-    else:
-        await update.message.reply_text("Você não está no grupo de fusão.")
+    # Verifica se a mensagem contém uma menção a um usuário
+    if update.message.reply_to_message and update.message.reply_to_message.from_user:
+        mentioned_username = update.message.reply_to_message.from_user.username
 
+        async with httpx.AsyncClient() as client:
+            response = await client.get('http://localhost:3002/api/usuarios/')
+
+            if response.status_code == 200:
+                usuarios = response.json()
+
+                for usuario in usuarios:
+                    print("Username:", usuario['username'])
+                    if usuario['username'] == mentioned_username and usuario['grupo'] == 'fusao_group':
+                        user_id = usuario['id']
+
+                        delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}')
+
+                        if delete_response.status_code == 200:
+                            await update.message.reply_text(f"Removido {mentioned_username} do grupo da fusao.")
+                        else:
+                            await update.message.reply_text(f"Erro ao remover {mentioned_username} do grupo da fusao.")
+                        break  # Parar a iteração após a exclusão
+
+                else:
+                    await update.message.reply_text(f"{mentioned_username} não está no grupo da fusao.")
+            else:
+                await update.message.reply_text("Erro ao acessar a API de usuários.")
+    else:
+        await update.message.reply_text("Você precisa responder a uma mensagem mencionando o usuário para remover do grupo da fusao.")
 
 async def remover_comercial(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    username = update.message.chat.username
-    if username in comercial_group:
-        del comercial_group[username]
-        await update.message.reply_text(f"Removido {username} do grupo comercial.")
+    # Verifica se a mensagem contém uma menção a um usuário
+    if update.message.reply_to_message and update.message.reply_to_message.from_user:
+        mentioned_username = update.message.reply_to_message.from_user.username
+
+        async with httpx.AsyncClient() as client:
+            response = await client.get('http://localhost:3002/api/usuarios/')
+
+            if response.status_code == 200:
+                usuarios = response.json()
+
+                for usuario in usuarios:
+                    print("Username:", usuario['username'])
+                    if usuario['username'] == mentioned_username and usuario['grupo'] == 'comercial_group':
+                        user_id = usuario['id']
+
+                        delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}')
+
+                        if delete_response.status_code == 200:
+                            await update.message.reply_text(f"Removido {mentioned_username} do grupo do comercial.")
+                        else:
+                            await update.message.reply_text(f"Erro ao remover {mentioned_username} do grupo do comercial.")
+                        break  # Parar a iteração após a exclusão
+
+                else:
+                    await update.message.reply_text(f"{mentioned_username} não está no grupo do comercial.")
+            else:
+                await update.message.reply_text("Erro ao acessar a API de usuários.")
     else:
-        await update.message.reply_text("Você não está no grupo comercial.")
+        await update.message.reply_text("Você precisa responder a uma mensagem mencionando o usuário para remover do grupo do comercial.")
+
 
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
