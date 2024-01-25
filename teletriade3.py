@@ -264,31 +264,37 @@ async def adicionar_comercial(update: Update, context: ContextTypes.DEFAULT_TYPE
 
 
 async def remover_suporte(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    username = update.message.chat.username
+    # Verifica se a mensagem contém uma menção a um usuário
+    if update.message.entities and update.message.entities[0].type == "mention":
+        # Extrai o nome de usuário mencionado
+        mentioned_username = update.message.text[update.message.entities[0].offset + 1:update.message.entities[0].offset + update.message.entities[0].length]
+        
+        async with httpx.AsyncClient() as client:
+            response = await client.get('http://localhost:3002/api/usuarios/')
 
-    async with httpx.AsyncClient() as client:
-        response = await client.get('http://localhost:3002/api/usuarios/')
+            if response.status_code == 200:
+                usuarios = response.json()
 
-        if response.status_code == 200:
-            usuarios = response.json()
+                for usuario in usuarios:
+                    print("Username:", usuario['username'])
+                    if usuario['username'] == mentioned_username and usuario['grupo'] == 'suporte_group':
+                        user_id = usuario['id']
 
-            for usuario in usuarios:
-                print("Username:", usuario['username'])
-                if usuario['username'] == username and usuario['grupo'] == 'suporte_group':
-                    user_id = usuario['id']
+                        delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}')
 
-                    delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}')
+                        if delete_response.status_code == 204:
+                            await update.message.reply_text(f"Removido {mentioned_username} do grupo de suporte.")
+                        else:
+                            await update.message.reply_text(f"Erro ao remover {mentioned_username} do grupo de suporte.")
+                        break  # Parar a iteração após a exclusão
 
-                    if delete_response.status_code == 204:
-                        await update.message.reply_text(f"Removido {username} do grupo de suporte.")
-                    else:
-                        await update.message.reply_text(f"Erro ao remover {username} do grupo de suporte.")
-                    break  # Parar a iteração após a exclusão
-
+                else:
+                    await update.message.reply_text(f"{mentioned_username} não está no grupo de suporte.")
             else:
-                await update.message.reply_text("Você não está no grupo de suporte.")
-        else:
-            await update.message.reply_text("Erro ao acessar a API de usuários.")
+                await update.message.reply_text("Erro ao acessar a API de usuários.")
+    else:
+        await update.message.reply_text("Você precisa mencionar um usuário para remover do grupo de suporte.")
+
 
 
 async def remover_financeiro(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:

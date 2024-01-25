@@ -29,16 +29,17 @@ CREATE TABLE `app-triade`.`mensagens` (
 
 ALTER TABLE `mensagens` CHANGE ´msg2´ `msg` MEDIUMTEXT;
 ALTER TABLE `mensagens` DROP COLUMN `msg`;
+ALTER TABLE usuario
+ADD COLUMN os VARCHAR(255) DEFAULT '0';
+
 SELECT * FROM mensagens;
-SELECT * FROM mensagens WHERE number = 31989313830 AND visto = 0;
+SELECT * FROM usuario WHERE number = 71;
 
 SELECT id, number, msg, status, status_msg, date_created FROM mensagens WHERE date_created > '2023-10-18T11:36:28.721Z' ORDER BY date_created;
 
 UPDATE mensagens SET visto = 0 WHERE number = 31989313830 and id > 1;
 
 SET SQL_SAFE_UPDATES = 0;
-
-drop TABLE mensagens;
 
 SELECT distinct mensagens.number,
        mensagens.msg,
@@ -48,18 +49,22 @@ INNER JOIN mensagens ON mensagens.number = usuario.number
 WHERE mensagens.visto = 1;
 
 SELECT * FROM usuario;
+SELECT * FROM mensagens WHERE date_created >= '2024-01-18 00:04:28';
 SELECT * FROM mensagens
 WHERE mensagens.visto = 1;
-
-DELETE FROM `app-triade`.`mensagens` WHERE (`id` > '0');
 
 select usuario.nome,
        usuario.number,
        usuario.UID
 FROM usuario
 inner join mensagens ON mensagens.number = usuario.NUMBER
-WHERE usuario.number = '3199479990';
+WHERE usuario.number = '31988791029';
 
-SELECT * FROM mensagens WHERE number = '31989313830'
+SELECT * FROM mensagens WHERE number = '31991895411'
 ORDER BY date_created DESC;
 
+SELECT * FROM usuario WHERE number = 97103959048id AND visto = '0' AND msg not like '%HTTPSConnectionPool%';
+
+UPDATE usuario SET os = '1' WHERE UID = uid and id > 0;
+
+SELECT * FROM usuario WHERE nome = 'DAVID TESTE' AND id >0;

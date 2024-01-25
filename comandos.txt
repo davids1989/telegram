@@ -26,4 +26,12 @@ Instalar a dependencia do Mysql:
 pip install Flask pymysql
 
 Para executar o bot:
-python3 teletriade.py
+python3 teletriade3.py
+
+============================================
+
+Para executar o teletriade.js
+
+npm install express
+
+npm install mysql
