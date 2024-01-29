@@ -6,7 +6,8 @@ const mysql = require('mysql');
 const app = express();
 app.use(bodyParser.json());
 
-const connection = mysql.createConnection({
+const connection = mysql.createPool({
+  connectionLimit: 10,
   host: '38.156.3.8',
   port: 3306,
   user: 'david',
@@ -14,10 +15,10 @@ const connection = mysql.createConnection({
   database: 'telegram',
 });
 
-connection.connect((err) => {
-  if (err) throw err;
-  console.log('conexão com o MySQL estabelecida com sucesso!!');
-});
+//connection.connect((err) => {
+//  if (err) throw err;
+//  console.log('conexão com o MySQL estabelecida com sucesso!!');
+//});
 
 // API PARA O TELEGRAM
 
