@@ -4,6 +4,8 @@ from telegram.ext import Application, CommandHandler, ContextTypes
 import requests
 import logging
 import httpx
+from telegram import ChatPermissions
+from telegram.ext import ChatMemberUpdated
 
 # Configure httpcore logging to suppress INFO messages
 httpx_logger = logging.getLogger('httpx')
@@ -25,6 +27,8 @@ comercial_group = {}
 
 
 async def mencionar_suporte(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+
+    
    # Fazer uma solicitação HTTP para a API
     async with httpx.AsyncClient() as client:
         response = await client.get('http://localhost:3002/api/usuarios/')
@@ -135,6 +139,19 @@ async def mencionar_comercial(update: Update, context: ContextTypes.DEFAULT_TYPE
 
 
 async def adicionar_suporte(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+
+    chat_id = update.message.chat_id
+    user_id = update.message.from_user.id
+
+    # Obtenha informações sobre o remetente (ChatMember)
+    chat_member = await context.bot.get_chat_member(chat_id, user_id)
+
+    # Verifique se o usuário é um administrador ou proprietário
+    if chat_member.status not in ['administrator', 'creator']:
+        await update.message.reply_text("Você não tem permissão para executar este comando.")
+        return
+    
+
     if update.message.reply_to_message:
         mentioned_user = update.message.reply_to_message.from_user
         username = mentioned_user.username
