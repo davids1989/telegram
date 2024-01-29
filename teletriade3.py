@@ -5,7 +5,7 @@ import requests
 import logging
 import httpx
 from telegram import ChatPermissions
-from telegram.ext import ChatMemberUpdated
+from telegram.ext import ChatMemberUpdate
 
 # Configure httpcore logging to suppress INFO messages
 httpx_logger = logging.getLogger('httpx')
