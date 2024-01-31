@@ -1,11 +1,11 @@
 import logging
 from telegram import Update
-from telegram.ext import Application, CommandHandler, ContextTypes
+from telegram.ext import Application, CommandHandler, ContextTypes, CallbackContext
+from telegram import ChatAction
+from telegram.error import BadRequest
 import requests
 import logging
 import httpx
-from telegram import ChatPermissions
-from telegram.ext import ChatMemberUpdate
 
 # Configure httpcore logging to suppress INFO messages
 httpx_logger = logging.getLogger('httpx')
@@ -24,6 +24,19 @@ financeiro_group = {}
 tecnicos_group = {}
 fusao_group = {}
 comercial_group = {}
+
+async def check_admin(update: Update, context: CallbackContext) -> None:
+    chat_id = update.effective_chat.id
+    user_id = update.effective_user.id
+    try:
+        chat_admins = await context.bot.get_chat_administrators(chat_id)
+        for admin in chat_admins:
+            if admin.user.id == user_id and (admin.status == 'creator' or admin.status == 'administrator'):
+                await update.message.reply_text("O usuário é um administrador ou proprietário do grupo.")
+                return
+        await update.message.reply_text("O usuário não é um administrador ou proprietário do grupo.")
+    except BadRequest as e:
+        await update.message.reply_text(f"Erro: {e}")
 
 
 async def mencionar_suporte(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -138,19 +151,7 @@ async def mencionar_comercial(update: Update, context: ContextTypes.DEFAULT_TYPE
         await update.message.reply_text("Ocorreu um erro ao acessar a API de usuários.")
 
 
-async def adicionar_suporte(update: Update, context: ChatMemberUpdate) -> None:
-
-    chat_id = update.message.chat_id
-    user_id = update.message.from_user.id
-
-    # Obtenha informações sobre o remetente (ChatMember)
-    chat_member = await context.bot.get_chat_member(chat_id, user_id)
-
-    # Verifique se o usuário é um administrador ou proprietário
-    if chat_member.status not in ['administrator', 'creator']:
-        await update.message.reply_text("Você não tem permissão para executar este comando.")
-        return
-    
+async def adicionar_suporte(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
     if update.message.reply_to_message:
         mentioned_user = update.message.reply_to_message.from_user
@@ -175,8 +176,6 @@ async def adicionar_suporte(update: Update, context: ChatMemberUpdate) -> None:
             await update.message.reply_text("Erro ao adicionar o usuário ao grupo de suporte.")
     else:
         await update.message.reply_text("Você precisa mencionar um usuário para adicionar ao grupo de suporte.")
-
-    pass
 
 async def adicionar_financeiro(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if update.message.reply_to_message:
