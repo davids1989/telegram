@@ -1,8 +1,8 @@
 import logging
 from telegram import Update
-from telegram.ext import Application, CommandHandler, ContextTypes, CallbackContext, Updater
-from telegram import ChatMember, ChatMemberUpdated
+from telegram.ext import Application, CommandHandler, ContextTypes
 import requests
+import logging
 import httpx
 
 # Configure httpcore logging to suppress INFO messages
@@ -267,21 +267,6 @@ async def adicionar_comercial(update: Update, context: ContextTypes.DEFAULT_TYPE
 
 
 async def remover_suporte(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-
-    chat_id = update.effective_chat.id
-    user_id = update.effective_user.id
-    chat_member = await context.bot.get_chat_member(chat_id, user_id)
-    
-    if chat_member.status in ("administrator", "creator"):
-        # O usuário é um administrador ou proprietário do grupo, execute a lógica de remoção aqui
-        await update.message.reply_text("Você tem permissão para executar esta ação.")
-    else:
-        # O usuário não tem permissão para executar a ação
-        await update.message.reply_text("Você não tem permissão para executar esta ação.")
-
-    # Adicione o CommandHandler para o comando "remover_suporte"
-    updater.dispatcher.add_handler(CommandHandler("remover_suporte", remover_suporte))
-
     # Verifica se a mensagem contém uma menção a um usuário
     if update.message.reply_to_message and update.message.reply_to_message.from_user:
         mentioned_username = update.message.reply_to_message.from_user.username
@@ -451,30 +436,28 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
 
 def main() -> None:
     """Run the bot."""
-    
-    updater = Updater(token="6473614239:AAHtG7dot5Zr5njx48eIL1YrewkkjyRn3to", use_context=True)
-    # Crie uma instância da classe Application
-    
-    updater.dispatcher.add_handler(CommandHandler("mencionar_suporte", mencionar_suporte))
-    updater.dispatcher.add_handler(CommandHandler("mencionar_financeiro", mencionar_financeiro))
-    updater.dispatcher.add_handler(CommandHandler("mencionar_tecnicos", mencionar_tecnicos))
-    updater.dispatcher.add_handler(CommandHandler("mencionar_fusao", mencionar_fusao))
-    updater.dispatcher.add_handler(CommandHandler("mencionar_comercial", mencionar_comercial))
-    updater.dispatcher.add_handler(CommandHandler("adicionar_suporte", adicionar_suporte))
-    updater.dispatcher.add_handler(CommandHandler("adicionar_financeiro", adicionar_financeiro))
-    updater.dispatcher.add_handler(CommandHandler("adicionar_tecnicos", adicionar_tecnicos))
-    updater.dispatcher.add_handler(CommandHandler("adicionar_fusao", adicionar_fusao))
-    updater.dispatcher.add_handler(CommandHandler("adicionar_comercial", adicionar_comercial))
-    updater.dispatcher.add_handler(CommandHandler("remover_suporte", remover_suporte))
-    updater.dispatcher.add_handler(CommandHandler("remover_financeiro", remover_financeiro))
-    updater.dispatcher.add_handler(CommandHandler("remover_tecnicos", remover_tecnicos))
-    updater.dispatcher.add_handler(CommandHandler("remover_fusao", remover_fusao))
-    updater.dispatcher.add_handler(CommandHandler("remover_comercial", remover_comercial))
-    updater.dispatcher.add_handler(CommandHandler("help", help_command))
+    # Create the Application and pass it your bot's token.
+    application = Application.builder().token("6473614239:AAHtG7dot5Zr5njx48eIL1YrewkkjyRn3to").build()
 
-    # Inicie o bot
-    updater.start_polling()
-    updater.idle()
+    application.add_handler(CommandHandler("mencionar_suporte", mencionar_suporte))
+    application.add_handler(CommandHandler("mencionar_financeiro", mencionar_financeiro))
+    application.add_handler(CommandHandler("mencionar_tecnicos", mencionar_tecnicos))
+    application.add_handler(CommandHandler("mencionar_fusao", mencionar_fusao))
+    application.add_handler(CommandHandler("mencionar_comercial", mencionar_comercial))
+    application.add_handler(CommandHandler("adicionar_suporte", adicionar_suporte))
+    application.add_handler(CommandHandler("adicionar_financeiro", adicionar_financeiro))
+    application.add_handler(CommandHandler("adicionar_tecnicos", adicionar_tecnicos))
+    application.add_handler(CommandHandler("adicionar_fusao", adicionar_fusao))
+    application.add_handler(CommandHandler("adicionar_comercial", adicionar_comercial))
+    application.add_handler(CommandHandler("remover_suporte", remover_suporte))
+    application.add_handler(CommandHandler("remover_financeiro", remover_financeiro))
+    application.add_handler(CommandHandler("remover_tecnicos", remover_tecnicos))
+    application.add_handler(CommandHandler("remover_fusao", remover_fusao))
+    application.add_handler(CommandHandler("remover_comercial", remover_comercial))
+    application.add_handler(CommandHandler("help", help_command))
+
+    # Run the bot until the user presses Ctrl-C
+    application.run_polling(allowed_updates=Update.ALL_TYPES)
 
 
 if __name__ == "__main__":
