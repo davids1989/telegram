@@ -1,10 +1,8 @@
 import logging
 from telegram import Update
-from telegram.ext import Application, CommandHandler, ContextTypes, CallbackContext
-from telegram import ChatAction
-from telegram.error import BadRequest
+from telegram.ext import Application, CommandHandler, ContextTypes, CallbackContext, Updater
+from telegram import ChatMember, ChatMemberUpdated
 import requests
-import logging
 import httpx
 
 # Configure httpcore logging to suppress INFO messages
@@ -24,19 +22,6 @@ financeiro_group = {}
 tecnicos_group = {}
 fusao_group = {}
 comercial_group = {}
-
-async def check_admin(update: Update, context: CallbackContext) -> None:
-    chat_id = update.effective_chat.id
-    user_id = update.effective_user.id
-    try:
-        chat_admins = await context.bot.get_chat_administrators(chat_id)
-        for admin in chat_admins:
-            if admin.user.id == user_id and (admin.status == 'creator' or admin.status == 'administrator'):
-                await update.message.reply_text("O usuário é um administrador ou proprietário do grupo.")
-                return
-        await update.message.reply_text("O usuário não é um administrador ou proprietário do grupo.")
-    except BadRequest as e:
-        await update.message.reply_text(f"Erro: {e}")
 
 
 async def mencionar_suporte(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -282,6 +267,21 @@ async def adicionar_comercial(update: Update, context: ContextTypes.DEFAULT_TYPE
 
 
 async def remover_suporte(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+
+    chat_id = update.effective_chat.id
+    user_id = update.effective_user.id
+    chat_member = await context.bot.get_chat_member(chat_id, user_id)
+    
+    if chat_member.status in ("administrator", "creator"):
+        # O usuário é um administrador ou proprietário do grupo, execute a lógica de remoção aqui
+        await update.message.reply_text("Você tem permissão para executar esta ação.")
+    else:
+        # O usuário não tem permissão para executar a ação
+        await update.message.reply_text("Você não tem permissão para executar esta ação.")
+
+    # Adicione o CommandHandler para o comando "remover_suporte"
+    application.add_handler(CommandHandler("remover_suporte", remover_suporte))
+
     # Verifica se a mensagem contém uma menção a um usuário
     if update.message.reply_to_message and update.message.reply_to_message.from_user:
         mentioned_username = update.message.reply_to_message.from_user.username
@@ -453,6 +453,10 @@ def main() -> None:
     """Run the bot."""
     # Create the Application and pass it your bot's token.
     application = Application.builder().token("6473614239:AAHtG7dot5Zr5njx48eIL1YrewkkjyRn3to").build()
+    
+    updater = Updater(token="6473614239:AAHtG7dot5Zr5njx48eIL1YrewkkjyRn3to", use_context=True)
+    # Crie uma instância da classe Application
+    application = updater.dispatcher
 
     application.add_handler(CommandHandler("mencionar_suporte", mencionar_suporte))
     application.add_handler(CommandHandler("mencionar_financeiro", mencionar_financeiro))
@@ -470,6 +474,10 @@ def main() -> None:
     application.add_handler(CommandHandler("remover_fusao", remover_fusao))
     application.add_handler(CommandHandler("remover_comercial", remover_comercial))
     application.add_handler(CommandHandler("help", help_command))
+
+    # Inicie o bot
+    updater.start_polling()
+    updater.idle()
 
     # Run the bot until the user presses Ctrl-C
     application.run_polling(allowed_updates=Update.ALL_TYPES)
