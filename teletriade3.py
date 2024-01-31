@@ -5,7 +5,7 @@ import requests
 import logging
 import httpx
 from telegram import ChatPermissions
-from telegram.ext import ChatMemberUpdated
+from telegram.ext import ChatMemberUpdate
 
 # Configure httpcore logging to suppress INFO messages
 httpx_logger = logging.getLogger('httpx')
@@ -138,7 +138,7 @@ async def mencionar_comercial(update: Update, context: ContextTypes.DEFAULT_TYPE
         await update.message.reply_text("Ocorreu um erro ao acessar a API de usuários.")
 
 
-async def adicionar_suporte(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+async def adicionar_suporte(update: Update, context: ChatMemberUpdate) -> None:
 
     chat_id = update.message.chat_id
     user_id = update.message.from_user.id
@@ -175,6 +175,8 @@ async def adicionar_suporte(update: Update, context: ContextTypes.DEFAULT_TYPE) 
             await update.message.reply_text("Erro ao adicionar o usuário ao grupo de suporte.")
     else:
         await update.message.reply_text("Você precisa mencionar um usuário para adicionar ao grupo de suporte.")
+
+    pass
 
 async def adicionar_financeiro(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if update.message.reply_to_message:
