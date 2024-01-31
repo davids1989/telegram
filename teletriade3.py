@@ -454,8 +454,7 @@ def main() -> None:
     
     updater = Updater(token="6473614239:AAHtG7dot5Zr5njx48eIL1YrewkkjyRn3to", use_context=True)
     # Crie uma instância da classe Application
-    application = updater.dispatcher
-
+    
     updater.dispatcher.add_handler(CommandHandler("mencionar_suporte", mencionar_suporte))
     updater.dispatcher.add_handler(CommandHandler("mencionar_financeiro", mencionar_financeiro))
     updater.dispatcher.add_handler(CommandHandler("mencionar_tecnicos", mencionar_tecnicos))
