@@ -451,8 +451,6 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
 
 def main() -> None:
     """Run the bot."""
-    # Create the Application and pass it your bot's token.
-    application = Application.builder().token("6473614239:AAHtG7dot5Zr5njx48eIL1YrewkkjyRn3to").build()
     
     updater = Updater(token="6473614239:AAHtG7dot5Zr5njx48eIL1YrewkkjyRn3to", use_context=True)
     # Crie uma instância da classe Application
@@ -478,9 +476,6 @@ def main() -> None:
     # Inicie o bot
     updater.start_polling()
     updater.idle()
-
-    # Run the bot until the user presses Ctrl-C
-    application.run_polling(allowed_updates=Update.ALL_TYPES)
 
 
 if __name__ == "__main__":
