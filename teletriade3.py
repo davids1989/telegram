@@ -449,7 +449,7 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     await update.message.reply_text("Use /start para testar este bot.")
 
 
-
+def main() -> None:
     """Run the bot."""
     
     updater = Updater(token="6473614239:AAHtG7dot5Zr5njx48eIL1YrewkkjyRn3to", use_context=True)
@@ -475,3 +475,7 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     # Inicie o bot
     updater.start_polling()
     updater.idle()
+
+
+if __name__ == "__main__":
+    main()
