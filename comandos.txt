@@ -28,6 +28,9 @@ pip3 install python-telegram-bot
 Instalar a dependencia do Mysql:
 pip install Flask pymysql
 
+Instalar a dependencia aiohttp
+pip install aiohttp
+
 Para executar o bot:
 python3 teletriade3.py
 

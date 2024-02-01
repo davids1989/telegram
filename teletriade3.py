@@ -160,16 +160,16 @@ async def adicionar_suporte(update: Update, context: ContextTypes.DEFAULT_TYPE) 
     if update.message.reply_to_message:
         # Verificar se o usuário que está executando a ação tem permissão para executar a ação
         if await check_group_role(update.message.from_user.id, group_id, context):
-            async with httpx.AsyncClient() as client:
-                mentioned_user = update.message.reply_to_message.from_user
-                username = mentioned_user.username
-                print("Username:", username)  # Print the username for debugging purposes
-                suporte_group[username] = True
-                print("Suporte Group:", suporte_group)  # Print the updated support group for debugging purposes
+            client = httpx.AsyncClient()  # Create the client without using async with
+            mentioned_user = update.message.reply_to_message.from_user
+            username = mentioned_user.username
+            print("Username:", username)  # Print the username for debugging purposes
+            suporte_group[username] = True
+            print("Suporte Group:", suporte_group)  # Print the updated support group for debugging purposes
 
-                # Faça a chamada de API para adicionar o usuário ao grupo de suporte
-                api_url = "http://localhost:3002/api/usuarios/"
-                data = { "username": username, "grupo": "suporte_group" }
+            # Faça a chamada de API para adicionar o usuário ao grupo de suporte
+            api_url = "http://localhost:3002/api/usuarios/"
+            data = { "username": username, "grupo": "suporte_group" }
 
             try:
                 response = await client.post(api_url, json=data)
@@ -181,6 +181,8 @@ async def adicionar_suporte(update: Update, context: ContextTypes.DEFAULT_TYPE) 
             except Exception as e:
                 print("Erro ao fazer a chamada de API:", str(e))
                 await update.message.reply_text("Erro ao adicionar o usuário ao grupo de suporte.")
+            finally:
+                await client.aclose()  # Close the client manually
     else:
         await update.message.reply_text("Você precisa mencionar um usuário para adicionar ao grupo de suporte.")
 
