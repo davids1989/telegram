@@ -4,6 +4,7 @@ from telegram.ext import Application, CommandHandler, ContextTypes
 import requests
 import logging
 import httpx
+import aiohttp
 
 # Configure httpcore logging to suppress INFO messages
 httpx_logger = logging.getLogger('httpx')
@@ -23,12 +24,19 @@ tecnicos_group = {}
 fusao_group = {}
 comercial_group = {}
 
-async def get_user_group_role(user_id, group_id):
-    # Substitua esta chamada de API pela que fornece as informações de função do usuário no grupo
-    role = get_user_group_role(user_id, group_id)  # Substitua get_user_group_role pela chamada de API apropriada
-    if role in ['owner', 'administrator']:
-        return True
-    else:
+async def check_group_role(user_id: int, group_id: int) -> bool:
+    """Verifica se o usuário tem permissão para executar a ação."""
+    try:
+        # Obter informações do usuário
+        user_info = await context.bot.get_chat_member(chat_id=group_id, user_id=user_id)
+
+        # Verificar se o usuário tem permissão para executar a ação
+        if user_info.status in ['administrator', 'creator']:
+            return True
+        else:
+            return False
+    except Exception as e:
+        print(f"Erro ao acessar a API de usuários: {e}")
         return False
 
 
