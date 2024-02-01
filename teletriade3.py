@@ -153,51 +153,37 @@ async def mencionar_comercial(update: Update, context: ContextTypes.DEFAULT_TYPE
 
 
 async def adicionar_suporte(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Adiciona um usuário ao grupo de suporte."""
 
     # Obter o ID do grupo a partir da mensagem
     group_id = update.message.chat_id
 
-    # Verificar se a mensagem contém uma menção a um usuário
-    if update.message.reply_to_message and update.message.reply_to_message.from_user:
-        mentioned_username = update.message.reply_to_message.from_user.username
-
+    if update.message.reply_to_message:
         # Verificar se o usuário que está executando a ação tem permissão para executar a ação
         if await check_group_role(update.message.from_user.id, group_id, context):
             async with httpx.AsyncClient() as client:
-                response = await client.get(f'http://localhost:3002/api/usuarios/?username={mentioned_username}')
+                mentioned_user = update.message.reply_to_message.from_user
+                username = mentioned_user.username
+                print("Username:", username)  # Print the username for debugging purposes
+                suporte_group[username] = True
+                print("Suporte Group:", suporte_group)  # Print the updated support group for debugging purposes
+
+                # Faça a chamada de API para adicionar o usuário ao grupo de suporte
+                api_url = "http://localhost:3002/api/usuarios/"
+                data = { "username": username, "grupo": "suporte_group" }
+
+            try:
+                response = await client.post(api_url, json=data)
 
                 if response.status_code == 200:
-                    usuario = response.json()
-
-                    if usuario:
-                        user_id = usuario[0]['id']
-
-                        # Verificar se o usuário já é suporte
-                        response = await client.get(f'http://localhost:3002/api/grupos/{group_id}/usuarios/{user_id}')
-
-                        if response.status_code == 200:
-                            if response.json():
-                                await update.message.reply_text(f"{mentioned_username} já é suporte.")
-                            else:
-                                # Adicionar o usuário ao grupo de suporte
-                                add_response = await client.put(f'http://localhost:3002/api/usuarios/{user_id}/grupos/{group_id}')
-
-                                if add_response.status_code == 200:
-                                    await update.message.reply_text(f"Adicionado {mentioned_username} ao grupo de suporte.")
-                                else:
-                                    await update.message.reply_text(f"Erro ao adicionar {mentioned_username} ao grupo de suporte.")
-                        else:
-                            await update.message.reply_text("Erro ao acessar a API de grupos.")
-                    else:
-                        await update.message.reply_text(f"{mentioned_username} não foi encontrado.")
+                    await update.message.reply_text(f"Adicionado {username} ao grupo de suporte.")
                 else:
-                    await update.message.reply_text("Erro ao acessar a API de usuários.")
-        else:
-            await update.message.reply_text("Você não tem permissão para executar esta ação.")
+                    await update.message.reply_text("Erro ao adicionar o usuário ao grupo de suporte.")
+            except Exception as e:
+                print("Erro ao fazer a chamada de API:", str(e))
+                await update.message.reply_text("Erro ao adicionar o usuário ao grupo de suporte.")
     else:
-        await update.message.reply_text("Você precisa responder a uma mensagem mencionando o usuário para adicionar ao grupo de suporte.")
-                     
+        await update.message.reply_text("Você precisa mencionar um usuário para adicionar ao grupo de suporte.")
+
 async def adicionar_financeiro(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if update.message.reply_to_message:
         mentioned_user = update.message.reply_to_message.from_user
