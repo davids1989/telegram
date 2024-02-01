@@ -174,16 +174,21 @@ async def adicionar_suporte(update: Update, context: ContextTypes.DEFAULT_TYPE) 
                         user_id = usuario[0]['id']
 
                         # Verificar se o usuário já é suporte
-                        if await check_group_role(user_id, 'suporte_group', context):
-                            await update.message.reply_text(f"{mentioned_username} já é suporte.")
-                        else:
-                            # Adicionar o usuário ao grupo de suporte
-                            add_response = await client.put(f'http://localhost:3002/api/usuarios/{user_id}/grupos/{group_id}')
+                        response = await client.get(f'http://localhost:3002/api/grupos/{group_id}/usuarios/{user_id}')
 
-                            if add_response.status_code == 200:
-                                await update.message.reply_text(f"Adicionado {mentioned_username} ao grupo de suporte.")
+                        if response.status_code == 200:
+                            if response.json():
+                                await update.message.reply_text(f"{mentioned_username} já é suporte.")
                             else:
-                                await update.message.reply_text(f"Erro ao adicionar {mentioned_username} ao grupo de suporte.")
+                                # Adicionar o usuário ao grupo de suporte
+                                add_response = await client.put(f'http://localhost:3002/api/usuarios/{user_id}/grupos/{group_id}')
+
+                                if add_response.status_code == 200:
+                                    await update.message.reply_text(f"Adicionado {mentioned_username} ao grupo de suporte.")
+                                else:
+                                    await update.message.reply_text(f"Erro ao adicionar {mentioned_username} ao grupo de suporte.")
+                        else:
+                            await update.message.reply_text("Erro ao acessar a API de grupos.")
                     else:
                         await update.message.reply_text(f"{mentioned_username} não foi encontrado.")
                 else:
@@ -192,7 +197,7 @@ async def adicionar_suporte(update: Update, context: ContextTypes.DEFAULT_TYPE) 
             await update.message.reply_text("Você não tem permissão para executar esta ação.")
     else:
         await update.message.reply_text("Você precisa responder a uma mensagem mencionando o usuário para adicionar ao grupo de suporte.")
-                
+                     
 async def adicionar_financeiro(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if update.message.reply_to_message:
         mentioned_user = update.message.reply_to_message.from_user
