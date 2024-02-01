@@ -23,6 +23,14 @@ tecnicos_group = {}
 fusao_group = {}
 comercial_group = {}
 
+async def check_group_role(user_id, group_id):
+    # Substitua esta chamada de API pela que fornece as informações de função do usuário no grupo
+    role = get_user_group_role(user_id, group_id)  # Substitua get_user_group_role pela chamada de API apropriada
+    if role in ['owner', 'administrator']:
+        return True
+    else:
+        return False
+
 
 async def mencionar_suporte(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
@@ -267,37 +275,36 @@ async def adicionar_comercial(update: Update, context: ContextTypes.DEFAULT_TYPE
 
 
 async def remover_suporte(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+
+    # Obtém o ID do grupo a partir da mensagem
+    group_id = update.message.chat_id
+
     # Verifica se a mensagem contém uma menção a um usuário
     if update.message.reply_to_message and update.message.reply_to_message.from_user:
         mentioned_username = update.message.reply_to_message.from_user.username
-
-        async with httpx.AsyncClient() as client:
-            response = await client.get('http://localhost:3002/api/usuarios/')
-
-            if response.status_code == 200:
-                usuarios = response.json()
-
-                for usuario in usuarios:
-                    print("Username:", usuario['username'])
-                    if usuario['username'] == mentioned_username and usuario['grupo'] == 'suporte_group':
-                        user_id = usuario['id']
-
-                        delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}')
-
-                        if delete_response.status_code == 200:
-                            await update.message.reply_text(f"Removido {mentioned_username} do grupo de suporte.")
-                        else:
-                            await update.message.reply_text(f"Erro ao remover {mentioned_username} do grupo de suporte.")
-                        break  # Parar a iteração após a exclusão
-
+        # Verifica se o usuário que está executando a ação é proprietário ou administrador do grupo
+        if await check_group_role(update.message.from_user.id, group_id):
+            async with httpx.AsyncClient() as client:
+                response = await client.get('http://localhost:3002/api/usuarios/')
+                if response.status_code == 200:
+                    usuarios = response.json()
+                    for usuario in usuarios:
+                        if usuario['username'] == mentioned_username and usuario['grupo'] == 'suporte_group':
+                            user_id = usuario['id']
+                            delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}')
+                            if delete_response.status_code == 200:
+                                await update.message.reply_text(f"Removido {mentioned_username} do grupo de suporte.")
+                            else:
+                                await update.message.reply_text(f"Erro ao remover {mentioned_username} do grupo de suporte.")
+                            break  # Parar a iteração após a exclusão
+                    else:
+                        await update.message.reply_text(f"{mentioned_username} não está no grupo de suporte.")
                 else:
-                    await update.message.reply_text(f"{mentioned_username} não está no grupo de suporte.")
-            else:
-                await update.message.reply_text("Erro ao acessar a API de usuários.")
+                    await update.message.reply_text("Erro ao acessar a API de usuários.")
+        else:
+            await update.message.reply_text("Você não tem permissão para executar esta ação.")
     else:
         await update.message.reply_text("Você precisa responder a uma mensagem mencionando o usuário para remover do grupo de suporte.")
-
-
 
 
 async def remover_financeiro(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
