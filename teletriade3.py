@@ -189,108 +189,148 @@ async def adicionar_suporte(update: Update, context: ContextTypes.DEFAULT_TYPE) 
         await update.message.reply_text("Você precisa mencionar um usuário para adicionar ao grupo de suporte.")
 
 async def adicionar_financeiro(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+
+    # Obter o ID do grupo a partir da mensagem
+    group_id = update.message.chat_id
+
     if update.message.reply_to_message:
-        mentioned_user = update.message.reply_to_message.from_user
-        username = mentioned_user.username
-        print("Username:", username)  # Print the username for debugging purposes
-        financeiro_group[username] = True
-        print("Financeiro Group:", financeiro_group)  # Print the updated financeiro group for debugging purposes
-        
-        # Faça a chamada de API para adicionar o usuário ao grupo de financeiro
-        api_url = "http://localhost:3002/api/usuarios/"
-        data = { "username": username, "grupo": "financeiro_group" }
+        # Verificar se o usuário que está executando a ação tem permissão para executar a ação
+        if await check_group_role(update.message.from_user.id, group_id, context):
+            client = httpx.AsyncClient()  # Create the client without using async with
+            mentioned_user = update.message.reply_to_message.from_user
+            username = mentioned_user.username
+            print("Username:", username)  # Print the username for debugging purposes
+            financeiro_group[username] = True
+            print("Financeiro Group:", financeiro_group)  
 
-        try:
-            response = requests.post(api_url, json=data)
+            # Faça a chamada de API para adicionar o usuário ao grupo do financeiro
+            api_url = "http://localhost:3002/api/usuarios/"
+            data = { "username": username, "grupo": "financeiro_group" }
 
-            if response.status_code == 200:
-                await update.message.reply_text(f"Adicionado {username} ao grupo do financeiro.")
-            else:
+            try:
+                response = await client.post(api_url, json=data)
+
+                if response.status_code == 200:
+                    await update.message.reply_text(f"Adicionado {username} ao grupo do financeiro.")
+                else:
+                    await update.message.reply_text("Erro ao adicionar o usuário ao grupo do financeiro.")
+            except Exception as e:
+                print("Erro ao fazer a chamada de API:", str(e))
                 await update.message.reply_text("Erro ao adicionar o usuário ao grupo do financeiro.")
-        except Exception as e:
-            print("Erro ao fazer a chamada de API:", str(e))
-            await update.message.reply_text("Erro ao adicionar o usuário ao grupo do financeiro.")
+            finally:
+                await client.aclose()  # Close the client manually
+        else:
+            await update.message.reply_text("Você não tem permissão para executar esta ação.")
     else:
-        await update.message.reply_text("Você precisa mencionar um usuário para adicionar ao grupo financeiro.")
-
+        await update.message.reply_text("Você precisa mencionar um usuário para adicionar ao grupo.")
 
 async def adicionar_tecnicos(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+
+    # Obter o ID do grupo a partir da mensagem
+    group_id = update.message.chat_id
+
     if update.message.reply_to_message:
-        mentioned_user = update.message.reply_to_message.from_user
-        username = mentioned_user.username
-        print("Username:", username)  # Print the username for debugging purposes
-        tecnicos_group[username] = True
-        print("Tecnicos Group:", tecnicos_group)  # Print the updated tecnicos group for debugging purposes
-        
-        # Faça a chamada de API para adicionar o usuário ao grupo dos técnicos
-        api_url = "http://localhost:3002/api/usuarios/"
-        data = { "username": username, "grupo": "tecnicos_group" }
+        # Verificar se o usuário que está executando a ação tem permissão para executar a ação
+        if await check_group_role(update.message.from_user.id, group_id, context):
+            client = httpx.AsyncClient()  # Create the client without using async with
+            mentioned_user = update.message.reply_to_message.from_user
+            username = mentioned_user.username
+            print("Username:", username)  # Print the username for debugging purposes
+            tecnicos_group[username] = True
+            print("tecnicos Group:", tecnicos_group)  
 
-        try:
-            response = requests.post(api_url, json=data)
+            # Faça a chamada de API para adicionar o usuário ao grupo do financeiro
+            api_url = "http://localhost:3002/api/usuarios/"
+            data = { "username": username, "grupo": "tecnicos_group" }
 
-            if response.status_code == 200:
-                await update.message.reply_text(f"Adicionado {username} ao grupo dos tecnicos.")
-            else:
+            try:
+                response = await client.post(api_url, json=data)
+
+                if response.status_code == 200:
+                    await update.message.reply_text(f"Adicionado {username} ao grupo dos tecnicos.")
+                else:
+                    await update.message.reply_text("Erro ao adicionar o usuário ao grupo dos tecnicos.")
+            except Exception as e:
+                print("Erro ao fazer a chamada de API:", str(e))
                 await update.message.reply_text("Erro ao adicionar o usuário ao grupo dos tecnicos.")
-        except Exception as e:
-            print("Erro ao fazer a chamada de API:", str(e))
-            await update.message.reply_text("Erro ao adicionar o usuário ao grupo dos tecnicos.")
+            finally:
+                await client.aclose()  # Close the client manually
+        else:
+            await update.message.reply_text("Você não tem permissão para executar esta ação.")
     else:
-        await update.message.reply_text("Você precisa mencionar um usuário para adicionar ao grupo dos técnicos.")
-
+        await update.message.reply_text("Você precisa mencionar um usuário para adicionar ao grupo.")
 
 async def adicionar_fusao(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+
+    # Obter o ID do grupo a partir da mensagem
+    group_id = update.message.chat_id
+
     if update.message.reply_to_message:
-        mentioned_user = update.message.reply_to_message.from_user
-        username = mentioned_user.username
-        print("Username:", username)  # Print the username for debugging purposes
-        fusao_group[username] = True
-        print("Fusao Group:", fusao_group)  # Print the updated fusao group for debugging purposes
-        
-        # Faça a chamada de API para adicionar o usuário ao grupo dos técnicos
-        api_url = "http://localhost:3002/api/usuarios/"
-        data = { "username": username, "grupo": "fusao_group" }
+        # Verificar se o usuário que está executando a ação tem permissão para executar a ação
+        if await check_group_role(update.message.from_user.id, group_id, context):
+            client = httpx.AsyncClient()  # Create the client without using async with
+            mentioned_user = update.message.reply_to_message.from_user
+            username = mentioned_user.username
+            print("Username:", username)  # Print the username for debugging purposes
+            fusao_group[username] = True
+            print("fusao Group:", fusao_group)  
 
-        try:
-            response = requests.post(api_url, json=data)
+            # Faça a chamada de API para adicionar o usuário ao grupo do financeiro
+            api_url = "http://localhost:3002/api/usuarios/"
+            data = { "username": username, "grupo": "fusao_group" }
 
-            if response.status_code == 200:
-                await update.message.reply_text(f"Adicionado {username} ao grupo de fusão.")
-            else:
-                await update.message.reply_text("Erro ao adicionar o usuário ao grupo de fusão.")
-        except Exception as e:
-            print("Erro ao fazer a chamada de API:", str(e))
-            await update.message.reply_text("Erro ao adicionar o usuário ao grupo de fusão.")
+            try:
+                response = await client.post(api_url, json=data)
+
+                if response.status_code == 200:
+                    await update.message.reply_text(f"Adicionado {username} ao grupo da fusao.")
+                else:
+                    await update.message.reply_text("Erro ao adicionar o usuário ao grupo da fusao.")
+            except Exception as e:
+                print("Erro ao fazer a chamada de API:", str(e))
+                await update.message.reply_text("Erro ao adicionar o usuário ao grupo da fusao.")
+            finally:
+                await client.aclose()  # Close the client manually
+        else:
+            await update.message.reply_text("Você não tem permissão para executar esta ação.")
     else:
-        await update.message.reply_text("Você precisa mencionar um usuário para adicionar ao grupo de fusão.")
-
+        await update.message.reply_text("Você precisa mencionar um usuário para adicionar ao grupo.")
 
 async def adicionar_comercial(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+
+    # Obter o ID do grupo a partir da mensagem
+    group_id = update.message.chat_id
+
     if update.message.reply_to_message:
-        mentioned_user = update.message.reply_to_message.from_user
-        username = mentioned_user.username
-        print("Username:", username)  # Print the username for debugging purposes
-        comercial_group[username] = True
-        print("Comercial Group:", comercial_group)  # Print the updated comercial group for debugging purposes
-        
-        # Faça a chamada de API para adicionar o usuário ao grupo comercial
-        api_url = "http://localhost:3002/api/usuarios/"
-        data = { "username": username, "grupo": "comercial_group" }
+        # Verificar se o usuário que está executando a ação tem permissão para executar a ação
+        if await check_group_role(update.message.from_user.id, group_id, context):
+            client = httpx.AsyncClient()  # Create the client without using async with
+            mentioned_user = update.message.reply_to_message.from_user
+            username = mentioned_user.username
+            print("Username:", username)  # Print the username for debugging purposes
+            comercial_group[username] = True
+            print("comercial Group:", comercial_group)  
 
-        try:
-            response = requests.post(api_url, json=data)
+            # Faça a chamada de API para adicionar o usuário ao grupo do financeiro
+            api_url = "http://localhost:3002/api/usuarios/"
+            data = { "username": username, "grupo": "comercial_group" }
 
-            if response.status_code == 200:
-                await update.message.reply_text(f"Adicionado {username} ao grupo comercial.")
-            else:
-                await update.message.reply_text("Erro ao adicionar o usuário ao grupo comercial.")
-        except Exception as e:
-            print("Erro ao fazer a chamada de API:", str(e))
-            await update.message.reply_text("Erro ao adicionar o usuário ao grupo comercial.")
+            try:
+                response = await client.post(api_url, json=data)
+
+                if response.status_code == 200:
+                    await update.message.reply_text(f"Adicionado {username} ao grupo do comercial.")
+                else:
+                    await update.message.reply_text("Erro ao adicionar o usuário ao grupo do comercial.")
+            except Exception as e:
+                print("Erro ao fazer a chamada de API:", str(e))
+                await update.message.reply_text("Erro ao adicionar o usuário ao grupo do comercial.")
+            finally:
+                await client.aclose()  # Close the client manually
+        else:
+            await update.message.reply_text("Você não tem permissão para executar esta ação.")
     else:
-        await update.message.reply_text("Você precisa mencionar um usuário para adicionar ao grupo comercial.")
-
+        await update.message.reply_text("Você precisa mencionar um usuário para adicionar ao grupo.")
 
 async def remover_suporte(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Remove um usuário do grupo de suporte."""
