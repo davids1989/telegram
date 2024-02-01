@@ -23,7 +23,7 @@ tecnicos_group = {}
 fusao_group = {}
 comercial_group = {}
 
-async def check_group_role(user_id, group_id):
+async def get_user_group_role(user_id, group_id):
     # Substitua esta chamada de API pela que fornece as informações de função do usuário no grupo
     role = get_user_group_role(user_id, group_id)  # Substitua get_user_group_role pela chamada de API apropriada
     if role in ['owner', 'administrator']:
