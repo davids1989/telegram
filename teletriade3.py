@@ -183,6 +183,8 @@ async def adicionar_suporte(update: Update, context: ContextTypes.DEFAULT_TYPE) 
                 await update.message.reply_text("Erro ao adicionar o usuário ao grupo de suporte.")
             finally:
                 await client.aclose()  # Close the client manually
+        else:
+            await update.message.reply_text("Você não tem permissão para executar esta ação.")
     else:
         await update.message.reply_text("Você precisa mencionar um usuário para adicionar ao grupo de suporte.")
 
