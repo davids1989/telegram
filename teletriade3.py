@@ -423,7 +423,7 @@ async def remover_tecnicos(update: Update, context: ContextTypes.DEFAULT_TYPE) -
                     usuario = response.json()
 
                     if usuario:
-                        user_id = update.message.from_user.id
+                        user_id = usuario[0]['id']
 
                         delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}')
 
