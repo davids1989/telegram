@@ -425,6 +425,7 @@ async def remover_tecnicos(update: Update, context: ContextTypes.DEFAULT_TYPE) -
 
                     if usuario:
                         # Obter o ID do usuário mencionado usando a biblioteca telethon
+                        print(f"Usuário mencionado: {update.message.reply_to_message.from_user}")
                         user_id = update.message.reply_to_message.entities[0].user_id
 
                         delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}')
