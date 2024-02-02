@@ -428,17 +428,19 @@ async def remover_tecnicos(update: Update, context: ContextTypes.DEFAULT_TYPE) -
                     if usuario:
                         user_id = usuario[0]['id']
 
-                        # Atualização: Enviar o nome do usuário como parâmetro na URL para a API de exclusão
-                        delete_response = await client.delete(f'http://localhost:3002/api/usuarios/delete', params={"username": mentioned_username, "grupo": "tecnicos_group"})
-                        
+                        # Atualização: Enviar o username e o grupo como parâmetros na URL para a API de exclusão
+                        delete_response = await client.delete(f'http://localhost:3002/api/usuarios/delete', params={
+                            "username": mentioned_username,
+                            "grupo": "tecnicos_group"
+                        })
+
                         if delete_response.status_code == 200:
                             await update.message.reply_text(f"Removido {mentioned_username} do grupo dos tecnicos.")
                         else:
                             await update.message.reply_text(f"Erro ao remover {mentioned_username} do grupo dos tecnicos.")
                     else:
-                            await update.message.reply_text(f"{mentioned_username} não foi encontrado.") 
-
-                else:  
+                        await update.message.reply_text(f"{mentioned_username} não foi encontrado.")
+                else:
                     await update.message.reply_text("Erro ao acessar a API de usuários.")
         else:
             await update.message.reply_text("Você não tem permissão para executar esta ação.")
