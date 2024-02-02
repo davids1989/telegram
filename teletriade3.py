@@ -412,12 +412,12 @@ async def remover_tecnicos(update: Update, context: ContextTypes.DEFAULT_TYPE) -
 
     # Verificar se a mensagem contém uma menção a um usuário
     if update.message.reply_to_message and update.message.reply_to_message.from_user:
-        mentioned_username = update.message.reply_to_message.from_user.username
+        mentioned_user = update.message.reply_to_message.from_user
 
         # Verificar se o usuário que está executando a ação tem permissão para executar a ação
         if await check_group_role(update.message.from_user.id, group_id, context):
             async with httpx.AsyncClient() as client:
-                response = await client.get(f'http://localhost:3002/api/usuarios/?username={mentioned_username}')
+                response = await client.get(f'http://localhost:3002/api/usuarios/?username={mentioned_user.username}')
 
                 if response.status_code == 200:
                     usuario = response.json()
@@ -428,11 +428,11 @@ async def remover_tecnicos(update: Update, context: ContextTypes.DEFAULT_TYPE) -
                         delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}')
 
                         if delete_response.status_code == 200:
-                            await update.message.reply_text(f"Removido {mentioned_username} do grupo dos tecnicos.")
+                            await update.message.reply_text(f"Removido {mentioned_user.username} do grupo dos tecnicos.")
                         else:
-                            await update.message.reply_text(f"Erro ao remover {mentioned_username} do grupo dos tecnicos.")
+                            await update.message.reply_text(f"Erro ao remover {mentioned_user.username} do grupo dos tecnicos.")
                     else:
-                        await update.message.reply_text(f"{mentioned_username} não foi encontrado.")
+                        await update.message.reply_text(f"{mentioned_user.username} não foi encontrado.")
                 else:
                     await update.message.reply_text("Erro ao acessar a API de usuários.")
         else:
