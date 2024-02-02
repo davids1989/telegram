@@ -7,6 +7,8 @@ import httpx
 import aiohttp
 from telethon.tl.types import MessageEntityMentionName
 
+logging.basicConfig(level=logging.INFO)
+
 # Configure httpcore logging to suppress INFO messages
 httpx_logger = logging.getLogger('httpx')
 httpx_logger.setLevel(logging.WARNING)  # Define o nível de log que você deseja (e.g., WARNING, ERROR)
@@ -427,8 +429,8 @@ async def remover_tecnicos(update: Update, context: ContextTypes.DEFAULT_TYPE) -
                         user_id = usuario[0]['id']
 
                         # Atualização: Enviar o nome do usuário como parâmetro na URL para a API de exclusão
-                        delete_response = await client.delete(f'http://localhost:3002/api/usuarios/delete?username={mentioned_username}')
-
+                        delete_response = await client.delete(f'http://localhost:3002/api/usuarios/delete', params={"username": mentioned_username, "grupo": "tecnicos_group"})
+                        
                         if delete_response.status_code == 200:
                             await update.message.reply_text(f"Removido {mentioned_username} do grupo dos tecnicos.")
                         else:
