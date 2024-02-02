@@ -406,7 +406,7 @@ async def remover_financeiro(update: Update, context: ContextTypes.DEFAULT_TYPE)
         await update.message.reply_text("Você precisa responder a uma mensagem mencionando o usuário para remover do grupo.")
 
 async def remover_tecnicos(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Remove um usuário do grupo de tecnico."""
+    """Remove um usuário do grupo de tecnicos."""
 
     # Obter o ID do grupo a partir da mensagem
     group_id = update.message.chat_id
@@ -424,11 +424,13 @@ async def remover_tecnicos(update: Update, context: ContextTypes.DEFAULT_TYPE) -
                     usuario = response.json()
 
                     if usuario:
-                        # Obter o ID do usuário mencionado usando a biblioteca telethon
-                        print(f"Usuário mencionado: {update.message.reply_to_message.from_user}")
-                        user_id = update.message.reply_to_message.entities[0].user_id
+                        user_id = usuario[0]['id']
 
-                        delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}')
+                        # Atualização: Enviar um objeto JSON para a API de exclusão
+                        delete_response = await client.delete(f'http://localhost:3002/api/usuarios/delete', json={
+                            "username": mentioned_username,
+                            "grupo": "tecnicos_group"
+                        })
 
                         if delete_response.status_code == 200:
                             await update.message.reply_text(f"Removido {mentioned_username} do grupo dos tecnicos.")
