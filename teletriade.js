@@ -37,12 +37,23 @@ app.post('/api/usuarios', (req, res) => {
   });
 });
 
-app.delete('/api/usuarios/delete', (req, res) => {
-  const { username, grupo } = req.params.id;
-  connection.query('DELETE FROM usuarios WHERE id > 0 AND username = ? AND grupo = ? ', [username, grupo], (err, result) => {
-    if (err) throw err;
-    res.send('Usuario Excluído!');
-  });
+app.delete('/api/usuarios/delete', jsonParser, (req, res) => {
+  const { username } = req.query;
+  const { grupo } = req.query;
+
+  // Verificar se o usuário pertence ao grupo de tecnicos
+  if (grupo === 'tecnicos_group') {
+    // Remover o usuário do grupo de tecnicos
+    Usuario.deleteOne({ username }, (err) => {
+      if (err) {
+        return res.status(500).json({ message: 'Erro ao remover o usuário do grupo de tecnicos.' });
+      }
+
+      return res.status(200).json({ message: 'Usuário removido do grupo de tecnicos com sucesso.' });
+    });
+  } else {
+    return res.status(403).json({ message: 'Você não tem permissão para executar esta ação.' });
+  }
 });
 const port = 3002;
 app.listen(port, () => {
