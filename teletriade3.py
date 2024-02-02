@@ -1,7 +1,7 @@
 import logging
-from telegram import Update
+from telegram import Update, ChatMember
 from typing import Any, Dict, List, Union
-from telegram.ext import Application, CommandHandler, ContextTypes
+from telegram.ext import Application, CommandHandler, ContextTypes, Context
 import requests
 import logging
 import httpx
@@ -432,9 +432,9 @@ async def remover_tecnicos(update: Update, context: Context) -> None:
                         delete_response = await client.delete(f'http://localhost:3002/api/usuarios/delete?username={mentioned_username}&grupo=tecnicos_group')
 
                         if delete_response.status_code == 200:
-                            await update.message.reply_text(f"Removido {mentioned_username} do grupo dos tecnicos.")
+                            await update.message.reply_text(f"Removido {mentioned_username} do grupo da fusão.")
                         else:
-                            await update.message.reply_text(f"Erro ao remover {mentioned_username} do grupo dos tecnicos.")
+                            await update.message.reply_text(f"Erro ao remover {mentioned_username} do grupo da fusão.")
                     else:
                         await update.message.reply_text(f"{mentioned_username} não foi encontrado.")
                 else:
