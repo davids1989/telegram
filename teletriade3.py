@@ -1,5 +1,6 @@
 import logging
 from telegram import Update
+from typing import Any, Dict, List, Union
 from telegram.ext import Application, CommandHandler, ContextTypes
 import requests
 import logging
@@ -407,8 +408,8 @@ async def remover_financeiro(update: Update, context: ContextTypes.DEFAULT_TYPE)
     else:
         await update.message.reply_text("Você precisa responder a uma mensagem mencionando o usuário para remover do grupo.")
 
-async def remover_tecnicos(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Remove um usuário do grupo de tecnicos."""
+async def remover_tecnicos(update: Update, context: Context) -> None:
+    """Remove um usuário do grupo de tecnico."""
 
     # Obter o ID do grupo a partir da mensagem
     group_id = update.message.chat_id
@@ -428,11 +429,7 @@ async def remover_tecnicos(update: Update, context: ContextTypes.DEFAULT_TYPE) -
                     if usuario:
                         user_id = usuario[0]['id']
 
-                        # Atualização: Enviar o username e o grupo como parâmetros na URL para a API de exclusão
-                        delete_response = await client.delete(f'http://localhost:3002/api/usuarios/delete', params={
-                            "username": mentioned_username,
-                            "grupo": "tecnicos_group"
-                        })
+                        delete_response = await client.delete(f'http://localhost:3002/api/usuarios/delete?username={mentioned_username}&grupo=tecnicos_group')
 
                         if delete_response.status_code == 200:
                             await update.message.reply_text(f"Removido {mentioned_username} do grupo dos tecnicos.")
