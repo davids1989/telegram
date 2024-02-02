@@ -408,7 +408,7 @@ async def remover_financeiro(update: Update, context: ContextTypes.DEFAULT_TYPE)
     else:
         await update.message.reply_text("Você precisa responder a uma mensagem mencionando o usuário para remover do grupo.")
 
-async def remover_tecnicos(update: Update, context: Context) -> None:
+async def remover_tecnicos(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Remove um usuário do grupo de tecnico."""
 
     # Obter o ID do grupo a partir da mensagem
@@ -429,12 +429,12 @@ async def remover_tecnicos(update: Update, context: Context) -> None:
                     if usuario:
                         user_id = usuario[0]['id']
 
-                        delete_response = await client.delete(f'http://localhost:3002/api/usuarios/delete?username={mentioned_username}&grupo=tecnicos_group')
+                        delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}')
 
                         if delete_response.status_code == 200:
-                            await update.message.reply_text(f"Removido {mentioned_username} do grupo da fusão.")
+                            await update.message.reply_text(f"Removido {mentioned_username} do grupo dos tecnicos.")
                         else:
-                            await update.message.reply_text(f"Erro ao remover {mentioned_username} do grupo da fusão.")
+                            await update.message.reply_text(f"Erro ao remover {mentioned_username} do grupo dos tecnicos.")
                     else:
                         await update.message.reply_text(f"{mentioned_username} não foi encontrado.")
                 else:
