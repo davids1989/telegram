@@ -1,12 +1,9 @@
 import logging
-from telegram import Update, ChatMember
-from typing import Any, Dict, List, Union
-from telegram.ext import Application, CommandHandler, ContextTypes, Context
+from telegram import Update
+from telegram.ext import Application, CommandHandler, ContextTypes
 import requests
 import logging
 import httpx
-import aiohttp
-from telethon.tl.types import MessageEntityMentionName
 
 logging.basicConfig(level=logging.INFO)
 
