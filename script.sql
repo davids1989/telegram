@@ -63,7 +63,7 @@ WHERE usuario.number = '31988791029';
 SELECT * FROM mensagens WHERE number = '31991895411'
 ORDER BY date_created DESC;
 
-SELECT * FROM usuario WHERE number = 97103959048id AND visto = '0' AND msg not like '%HTTPSConnectionPool%';
+SELECT * FROM usuario WHERE number = 31987032080 AND visto = '0' AND msg not like '%HTTPSConnectionPool%';
 
 UPDATE usuario SET os = '1' WHERE UID = uid and id > 0;
 
