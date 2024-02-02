@@ -420,10 +420,13 @@ async def remover_tecnicos(update: Update, context: ContextTypes.DEFAULT_TYPE) -
                 response = await client.get(f'http://localhost:3002/api/usuarios/?username={mentioned_user.username}')
 
                 if response.status_code == 200:
-                    usuario = response.json()
+                    usuarios = response.json()
 
-                    if usuario:
-                        user_id = usuario[0]['id']
+                    # Filtrar o usuário mencionado da lista de usuários
+                    usuario_mencionado = next((usuario for usuario in usuarios if usuario['id'] == mentioned_user.id), None)
+
+                    if usuario_mencionado:
+                        user_id = usuario_mencionado['id']
 
                         delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}')
 
