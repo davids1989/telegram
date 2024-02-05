@@ -33,8 +33,8 @@ app.get('/api/usuarios', (req, res) => {
 });
 
 app.post('/api/usuarios', (req, res) => {
-  const { username, grupo } = req.body;
-  connection.query('INSERT INTO usuarios (username, grupo) VALUES (?, ?)', [username, grupo], (err, result) => {
+  const { username, grupo, telegram_id } = req.body;
+  connection.query('INSERT INTO usuarios (username, grupo, telegram_id) VALUES (?, ?, ?)', [username, grupo, telegram_id], (err, result) => {
     if (err) throw err;
     res.send('Usuario Salvo!');
   });

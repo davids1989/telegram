@@ -163,14 +163,15 @@ async def adicionar_suporte(update: Update, context: ContextTypes.DEFAULT_TYPE) 
         if await check_group_role(update.message.from_user.id, group_id, context):
             client = httpx.AsyncClient()  # Create the client without using async with
             mentioned_user = update.message.reply_to_message.from_user
+            user_id = mentioned_user.id  # Get the user ID
             username = mentioned_user.username
             print("Username:", username)  # Print the username for debugging purposes
-            suporte_group[username] = True
+            suporte_group[user_id] = username  # Store the username in the support group dictionary
             print("Suporte Group:", suporte_group)  # Print the updated support group for debugging purposes
 
             # Faça a chamada de API para adicionar o usuário ao grupo de suporte
             api_url = "http://localhost:3002/api/usuarios/"
-            data = { "username": username, "grupo": "suporte_group" }
+            data = { "username": username, "grupo": "suporte_group", "telegram_id": user_id }
 
             try:
                 response = await client.post(api_url, json=data)
@@ -188,7 +189,7 @@ async def adicionar_suporte(update: Update, context: ContextTypes.DEFAULT_TYPE) 
             await update.message.reply_text("Você não tem permissão para executar esta ação.")
     else:
         await update.message.reply_text("Você precisa mencionar um usuário para adicionar ao grupo de suporte.")
-
+        
 async def adicionar_financeiro(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
     # Obter o ID do grupo a partir da mensagem
@@ -405,7 +406,7 @@ async def remover_financeiro(update: Update, context: ContextTypes.DEFAULT_TYPE)
     else:
         await update.message.reply_text("Você precisa responder a uma mensagem mencionando o usuário para remover do grupo.")
 
-async def remover_tecnicos(update: Update, context: Context) -> None:
+async def remover_tecnicos(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Remove um usuário do grupo de tecnico."""
 
     # Obter o ID do grupo a partir da mensagem
@@ -426,12 +427,12 @@ async def remover_tecnicos(update: Update, context: Context) -> None:
                     if usuario:
                         user_id = usuario[0]['id']
 
-                        delete_response = await client.delete(f'http://localhost:3002/api/usuarios/delete?username={mentioned_username}&grupo=tecnicos_group')
+                        delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}')
 
                         if delete_response.status_code == 200:
-                            await update.message.reply_text(f"Removido {mentioned_username} do grupo dos tecnicos.")
+                            await update.message.reply_text(f"Removido {mentioned_username} do grupo tecnico.")
                         else:
-                            await update.message.reply_text(f"Erro ao remover {mentioned_username} do grupo dos tecnicos.")
+                            await update.message.reply_text(f"Erro ao remover {mentioned_username} do grupo tecnico.")
                     else:
                         await update.message.reply_text(f"{mentioned_username} não foi encontrado.")
                 else:
