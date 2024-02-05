@@ -55,7 +55,7 @@ app.post('/api/usuarios', (req, res) => {
 
 app.delete('/api/usuarios/:id/:grupo', (req, res) => {
   const id = req.params.id;
-  const grupo = req.params.grupos;
+  const grupo = req.params.grupo;
   connection.query('DELETE FROM usuarios WHERE telegram_id = ? AND grupo = ?', [id, grupo], (err, result) => {
     if (err) throw err;
     res.send('Usuario Excluído!');
