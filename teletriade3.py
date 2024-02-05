@@ -521,7 +521,7 @@ async def adicionar_ti(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     else:
         await update.message.reply_text("Você precisa mencionar um usuário para adicionar ao grupo do Ti.")
 
-async def remover_financeiro(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+async def remover_suporte(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Remove um usuário do grupo do suporte."""
 
     # Obter o ID do grupo a partir da mensagem
