@@ -33,11 +33,26 @@ app.get('/api/usuarios/:id', (req, res) => {
 
 app.post('/api/usuarios', (req, res) => {
   const { username, grupo, telegram_id } = req.body;
-  connection.query('INSERT INTO usuarios (username, grupo, telegram_id) VALUES (?, ?, ?)', [username, grupo, telegram_id], (err, result) => {
-    if (err) throw err;
-    res.send('Usuario Salvo!');
+
+  // Verificar se o telegram_id já existe
+  connection.query('SELECT COUNT(*) as count FROM usuarios WHERE telegram_id = ?', [telegram_id], (selectErr, selectResult) => {
+    if (selectErr) throw selectErr;
+
+    const userCount = selectResult[0].count;
+
+    if (userCount > 0) {
+      // O usuário já existe no grupo
+      res.status(400).send('Usuário já existe no grupo.');
+    } else {
+      // O usuário não existe, proceder com a inserção
+      connection.query('INSERT INTO usuarios (username, grupo, telegram_id) VALUES (?, ?, ?)', [username, grupo, telegram_id], (insertErr, insertResult) => {
+        if (insertErr) throw insertErr;
+        res.send('Usuário Salvo!');
+      });
+    }
   });
 });
+
 
 app.delete('/api/usuarios/:id', (req, res) => {
   const id = req.params.id;
