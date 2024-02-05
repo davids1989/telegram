@@ -23,8 +23,9 @@ const connection = mysql.createPool({
 
 // API PARA O TELEGRAM
 
-app.get('/api/usuarios', (req, res) => {
-  connection.query('SELECT * FROM usuarios', (err, result) => {
+app.get('/api/usuarios/:id', (req, res) => {
+  const id = req.params.id;
+  connection.query('SELECT telegram_id FROM usuarios WHERE telegram_id = ?', [id], (err, result) => {
     if (err) throw err;
     res.send(result);
   });
