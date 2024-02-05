@@ -1,4 +1,4 @@
-SELECT * FROM usuarios where telegram_id = 1292043080 and grupo = "suporte_group";
+SELECT * FROM usuariosgrupos where telegram_id = 1292043080 and grupo = "suporte_group";
 select * from grupos;
 
 ALTER TABLE usuarios MODIFY COLUMN id INT;
