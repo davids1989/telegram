@@ -535,7 +535,7 @@ async def remover_suporte(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
         # Verificar se o usuário que está executando a ação tem permissão para executar a ação
         if await check_group_role(update.message.from_user.id, group_id, context):
             async with httpx.AsyncClient() as client:
-                delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}/{suporte_group}')
+                delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}/suporte_group')
 
                 if delete_response.status_code == 200:
                     await update.message.reply_text(f"Removido {mentioned_user.username} do grupo do suporte.")
