@@ -34,7 +34,7 @@ app.post('/api/usuarios', (req, res) => {
   const { username, grupo, telegram_id } = req.body;
 
   // Verificar se o telegram_id já existe
-  connection.query('SELECT COUNT(*) as count FROM usuarios WHERE telegram_id = ?', [telegram_id], (selectErr, selectResult) => {
+  connection.query('SELECT COUNT(*) as count FROM usuarios WHERE telegram_id = ? AND grupo = ?', [telegram_id, grupo], (selectErr, selectResult) => {
     if (selectErr) throw selectErr;
 
     const userCount = selectResult[0].count;
