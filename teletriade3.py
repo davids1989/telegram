@@ -538,13 +538,17 @@ async def remover_suporte(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
         # Verificar se o usuário que está executando a ação tem permissão para executar a ação
         if await check_group_role(update.message.from_user.id, group_id, context):
             async with httpx.AsyncClient() as client:
-                # Enviar o parâmetro 'grupo' na chamada da API
-                delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}?grupo={group}')
+                # Criar o JSON para enviar na solicitação
+                json_data = {"telegram_id": user_id, "grupo": group}
+                headers = {"Content-Type": "application/json"}
+
+                # Enviar o JSON no corpo da solicitação
+                delete_response = await client.delete(f'http://localhost:3002/api/usuarios', json=json_data, headers=headers)
 
                 if delete_response.status_code == 200:
                     await update.message.reply_text(f"Removido {mentioned_user.username} do grupo de suporte.")
                 else:
-                    await update.message.reply_text(f"Erro ao remover {mentioned_user.username} do grupo de suporte.")
+                    await update.message.reply_text(f"Erro ao remover {mentioned_user.username} do grupo de suporte. Status code: {delete_response.status_code}")
         else:
             await update.message.reply_text("Você não tem permissão para executar esta ação.")
     else:
