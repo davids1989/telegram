@@ -561,7 +561,7 @@ async def remover_financeiro(update: Update, context: ContextTypes.DEFAULT_TYPE)
         # Verificar se o usuário que está executando a ação tem permissão para executar a ação
         if await check_group_role(update.message.from_user.id, group_id, context):
             async with httpx.AsyncClient() as client:
-                delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}')
+                delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}/financeiro_group')
 
                 if delete_response.status_code == 200:
                     await update.message.reply_text(f"Removido {mentioned_user.username} do grupo do financeiro.")
@@ -587,7 +587,7 @@ async def remover_tecnicos(update: Update, context: ContextTypes.DEFAULT_TYPE) -
         # Verificar se o usuário que está executando a ação tem permissão para executar a ação
         if await check_group_role(update.message.from_user.id, group_id, context):
             async with httpx.AsyncClient() as client:
-                delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}')
+                delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}/tecnicos_group')
 
                 if delete_response.status_code == 200:
                     await update.message.reply_text(f"Removido {mentioned_user.username} do grupo dos técnicos.")
@@ -614,7 +614,7 @@ async def remover_fusao(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
         # Verificar se o usuário que está executando a ação tem permissão para executar a ação
         if await check_group_role(update.message.from_user.id, group_id, context):
             async with httpx.AsyncClient() as client:
-                delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}')
+                delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}/fusao_group')
 
                 if delete_response.status_code == 200:
                     await update.message.reply_text(f"Removido {mentioned_user.username} do grupo da fusão.")
@@ -640,7 +640,7 @@ async def remover_comercial(update: Update, context: ContextTypes.DEFAULT_TYPE) 
         # Verificar se o usuário que está executando a ação tem permissão para executar a ação
         if await check_group_role(update.message.from_user.id, group_id, context):
             async with httpx.AsyncClient() as client:
-                delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}')
+                delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}/comercial_group')
 
                 if delete_response.status_code == 200:
                     await update.message.reply_text(f"Removido {mentioned_user.username} do grupo do comercial.")
@@ -665,7 +665,7 @@ async def remover_almoxarifado(update: Update, context: ContextTypes.DEFAULT_TYP
         # Verificar se o usuário que está executando a ação tem permissão para executar a ação
         if await check_group_role(update.message.from_user.id, group_id, context):
             async with httpx.AsyncClient() as client:
-                delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}')
+                delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}/almoxarifado_group')
 
                 if delete_response.status_code == 200:
                     await update.message.reply_text(f"Removido {mentioned_user.username} do grupo do almoxarifado.")
@@ -690,7 +690,7 @@ async def remover_administrativo(update: Update, context: ContextTypes.DEFAULT_T
         # Verificar se o usuário que está executando a ação tem permissão para executar a ação
         if await check_group_role(update.message.from_user.id, group_id, context):
             async with httpx.AsyncClient() as client:
-                delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}')
+                delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}/administrativo_group')
 
                 if delete_response.status_code == 200:
                     await update.message.reply_text(f"Removido {mentioned_user.username} do grupo do administrativo.")
@@ -715,7 +715,7 @@ async def remover_ti(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
         # Verificar se o usuário que está executando a ação tem permissão para executar a ação
         if await check_group_role(update.message.from_user.id, group_id, context):
             async with httpx.AsyncClient() as client:
-                delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}')
+                delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}/ti_group')
 
                 if delete_response.status_code == 200:
                     await update.message.reply_text(f"Removido {mentioned_user.username} do grupo do Ti.")
