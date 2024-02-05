@@ -189,7 +189,7 @@ async def adicionar_suporte(update: Update, context: ContextTypes.DEFAULT_TYPE) 
             await update.message.reply_text("Você não tem permissão para executar esta ação.")
     else:
         await update.message.reply_text("Você precisa mencionar um usuário para adicionar ao grupo de suporte.")
-        
+
 async def adicionar_financeiro(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
     # Obter o ID do grupo a partir da mensagem
@@ -342,34 +342,23 @@ async def remover_suporte(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
 
     # Verificar se a mensagem contém uma menção a um usuário
     if update.message.reply_to_message and update.message.reply_to_message.from_user:
-        mentioned_username = update.message.reply_to_message.from_user.username
+        mentioned_user = update.message.reply_to_message.from_user
+        user_id = mentioned_user.id
 
         # Verificar se o usuário que está executando a ação tem permissão para executar a ação
         if await check_group_role(update.message.from_user.id, group_id, context):
             async with httpx.AsyncClient() as client:
-                response = await client.get(f'http://localhost:3002/api/usuarios/?username={mentioned_username}')
+                delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}')
 
-                if response.status_code == 200:
-                    usuario = response.json()
-
-                    if usuario:
-                        user_id = usuario[0]['id']
-
-                        delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}')
-
-                        if delete_response.status_code == 200:
-                            await update.message.reply_text(f"Removido {mentioned_username} do grupo de suporte.")
-                        else:
-                            await update.message.reply_text(f"Erro ao remover {mentioned_username} do grupo de suporte.")
-                    else:
-                        await update.message.reply_text(f"{mentioned_username} não foi encontrado.")
+                if delete_response.status_code == 200:
+                    await update.message.reply_text(f"Removido {mentioned_user.username} do grupo de suporte.")
                 else:
-                    await update.message.reply_text("Erro ao acessar a API de usuários.")
+                    await update.message.reply_text(f"Erro ao remover {mentioned_user.username} do grupo de suporte.")
         else:
             await update.message.reply_text("Você não tem permissão para executar esta ação.")
     else:
         await update.message.reply_text("Você precisa responder a uma mensagem mencionando o usuário para remover do grupo de suporte.")
-
+        
 async def remover_financeiro(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Remove um usuário do grupo de financeiro."""
 
