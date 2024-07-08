@@ -1,4 +1,5 @@
-979321 - Telegram > node teletriade.js - Parado
+SCREEN PY - 1446
+SCREEN JS - 1562
 
 cd /var/www/
 
