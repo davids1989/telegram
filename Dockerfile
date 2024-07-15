@@ -46,4 +46,4 @@ COPY --from=node_base /app/telegram/api /app/telegram/api
 COPY --from=python_base /app/telegram/bot /app/telegram/bot
 
 # Comando para rodar a API e o bot
-CMD ["node", "teletriade.js", "&", "python", "teletriade.py"]
+CMD ["node", "api/teletriade.js", "&", "python", "bot/teletriade.py"]
