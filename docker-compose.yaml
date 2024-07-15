@@ -1,0 +1,28 @@
+# docker-compose.yml
+version: '3'
+services:
+  api:
+    build: .
+    command: "npm run start"
+    working_dir: /app/telegram/api
+    environment:
+      - NODE_ENV=production
+    expose:
+      - "3002"
+    ports:
+      - "3002:3002"
+    networks:
+      - rede-triade:
+    restart: always
+  bot:
+    build: .
+    depends_on:
+      - api
+    networks:
+      - rede-triade:
+    
+
+networks:
+  rede-triade:
+    external: true
+    name: rede-triade

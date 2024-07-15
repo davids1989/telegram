@@ -49,7 +49,7 @@ async def mencionar_suporte(update: Update, context: ContextTypes.DEFAULT_TYPE) 
     
    # Fazer uma solicitação HTTP para a API
     async with httpx.AsyncClient() as client:
-        response = await client.get('http://localhost:3002/api/usuarios/')
+        response = await client.get('http://api:3002/api/usuarios/')
 
     # Verificar se a solicitação foi bem-sucedida (código de status 200)
     if response.status_code == 200:
@@ -71,7 +71,7 @@ async def mencionar_suporte(update: Update, context: ContextTypes.DEFAULT_TYPE) 
 async def mencionar_financeiro(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     # Fazer uma solicitação HTTP para a API
     async with httpx.AsyncClient() as client:
-        response = await client.get('http://localhost:3002/api/usuarios/')
+        response = await client.get('http://api:3002/api/usuarios/')
 
     # Verificar se a solicitação foi bem-sucedida (código de status 200)
     if response.status_code == 200:
@@ -93,7 +93,7 @@ async def mencionar_financeiro(update: Update, context: ContextTypes.DEFAULT_TYP
 async def mencionar_tecnicos(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     # Fazer uma solicitação HTTP para a API
     async with httpx.AsyncClient() as client:
-        response = await client.get('http://localhost:3002/api/usuarios/')
+        response = await client.get('http://api:3002/api/usuarios/')
 
     # Verificar se a solicitação foi bem-sucedida (código de status 200)
     if response.status_code == 200:
@@ -115,7 +115,7 @@ async def mencionar_tecnicos(update: Update, context: ContextTypes.DEFAULT_TYPE)
 async def mencionar_fusao(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     # Fazer uma solicitação HTTP para a API
     async with httpx.AsyncClient() as client:
-        response = await client.get('http://localhost:3002/api/usuarios/')
+        response = await client.get('http://api:3002/api/usuarios/')
 
     # Verificar se a solicitação foi bem-sucedida (código de status 200)
     if response.status_code == 200:
@@ -137,7 +137,7 @@ async def mencionar_fusao(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
 async def mencionar_comercial(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     # Fazer uma solicitação HTTP para a API
     async with httpx.AsyncClient() as client:
-        response = await client.get('http://localhost:3002/api/usuarios/')
+        response = await client.get('http://api:3002/api/usuarios/')
 
     # Verificar se a solicitação foi bem-sucedida (código de status 200)
     if response.status_code == 200:
@@ -160,7 +160,7 @@ async def mencionar_almoxarifado(update: Update, context: ContextTypes.DEFAULT_T
     
    # Fazer uma solicitação HTTP para a API
     async with httpx.AsyncClient() as client:
-        response = await client.get('http://localhost:3002/api/usuarios/')
+        response = await client.get('http://api:3002/api/usuarios/')
 
     # Verificar se a solicitação foi bem-sucedida (código de status 200)
     if response.status_code == 200:
@@ -183,7 +183,7 @@ async def mencionar_administrativo(update: Update, context: ContextTypes.DEFAULT
     
    # Fazer uma solicitação HTTP para a API
     async with httpx.AsyncClient() as client:
-        response = await client.get('http://localhost:3002/api/usuarios/')
+        response = await client.get('http://api:3002/api/usuarios/')
 
     # Verificar se a solicitação foi bem-sucedida (código de status 200)
     if response.status_code == 200:
@@ -206,7 +206,7 @@ async def mencionar_ti(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     
    # Fazer uma solicitação HTTP para a API
     async with httpx.AsyncClient() as client:
-        response = await client.get('http://localhost:3002/api/usuarios/')
+        response = await client.get('http://api:3002/api/usuarios/')
 
     # Verificar se a solicitação foi bem-sucedida (código de status 200)
     if response.status_code == 200:
@@ -242,7 +242,7 @@ async def adicionar_suporte(update: Update, context: ContextTypes.DEFAULT_TYPE) 
             print("Suporte Group:", suporte_group)  # Print the updated support group for debugging purposes
 
             # Faça a chamada de API para adicionar o usuário ao grupo de suporte
-            api_url = "http://localhost:3002/api/usuarios/"
+            api_url = "http://api:3002/api/usuarios/"
             data = { "username": username, "grupo": "suporte_group", "telegram_id": user_id }
 
             try:
@@ -279,7 +279,7 @@ async def adicionar_financeiro(update: Update, context: ContextTypes.DEFAULT_TYP
             print("financeiro Group:", financeiro_group)  # Print the updated support group for debugging purposes
 
             # Faça a chamada de API para adicionar o usuário ao grupo do financeiro
-            api_url = "http://localhost:3002/api/usuarios/"
+            api_url = "http://api:3002/api/usuarios/"
             data = { "username": username, "grupo": "financeiro_group", "telegram_id": user_id }
 
             try:
@@ -316,7 +316,7 @@ async def adicionar_tecnicos(update: Update, context: ContextTypes.DEFAULT_TYPE)
             print("tecnicos Group:", tecnicos_group)  # Print the updated support group for debugging purposes
 
             # Faça a chamada de API para adicionar o usuário ao grupo do financeiro
-            api_url = "http://localhost:3002/api/usuarios/"
+            api_url = "http://api:3002/api/usuarios/"
             data = { "username": username, "grupo": "tecnicos_group", "telegram_id": user_id }
 
             try:
@@ -353,7 +353,7 @@ async def adicionar_fusao(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
             print("fusao Group:", fusao_group)  # Print the updated support group for debugging purposes
 
             # Faça a chamada de API para adicionar o usuário ao grupo do financeiro
-            api_url = "http://localhost:3002/api/usuarios/"
+            api_url = "http://api:3002/api/usuarios/"
             data = { "username": username, "grupo": "fusao_group", "telegram_id": user_id }
 
             try:
@@ -390,7 +390,7 @@ async def adicionar_comercial(update: Update, context: ContextTypes.DEFAULT_TYPE
             print("comercial Group:", comercial_group)  # Print the updated support group for debugging purposes
 
             # Faça a chamada de API para adicionar o usuário ao grupo do financeiro
-            api_url = "http://localhost:3002/api/usuarios/"
+            api_url = "http://api:3002/api/usuarios/"
             data = { "username": username, "grupo": "comercial_group", "telegram_id": user_id }
 
             try:
@@ -427,7 +427,7 @@ async def adicionar_almoxarifado(update: Update, context: ContextTypes.DEFAULT_T
             print("almoxarifado Group:", almoxarifado_group)  # Print the updated support group for debugging purposes
 
             # Faça a chamada de API para adicionar o usuário ao grupo do financeiro
-            api_url = "http://localhost:3002/api/usuarios/"
+            api_url = "http://api:3002/api/usuarios/"
             data = { "username": username, "grupo": "almoxarifado_group", "telegram_id": user_id }
 
             try:
@@ -464,7 +464,7 @@ async def adicionar_administrativo(update: Update, context: ContextTypes.DEFAULT
             print("administrativo Group:", administrativo_group)  # Print the updated support group for debugging purposes
 
             # Faça a chamada de API para adicionar o usuário ao grupo do financeiro
-            api_url = "http://localhost:3002/api/usuarios/"
+            api_url = "http://api:3002/api/usuarios/"
             data = { "username": username, "grupo": "administrativo_group", "telegram_id": user_id }
 
             try:
@@ -501,7 +501,7 @@ async def adicionar_ti(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
             print("ti Group:", ti_group)  # Print the updated support group for debugging purposes
 
             # Faça a chamada de API para adicionar o usuário ao grupo do financeiro
-            api_url = "http://localhost:3002/api/usuarios/"
+            api_url = "http://api:3002/api/usuarios/"
             data = { "username": username, "grupo": "ti_group", "telegram_id": user_id }
 
             try:
@@ -535,7 +535,7 @@ async def remover_suporte(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
         # Verificar se o usuário que está executando a ação tem permissão para executar a ação
         if await check_group_role(update.message.from_user.id, group_id, context):
             async with httpx.AsyncClient() as client:
-                delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}/suporte_group')
+                delete_response = await client.delete(f'http://api:3002/api/usuarios/{user_id}/suporte_group')
 
                 if delete_response.status_code == 200:
                     await update.message.reply_text(f"Removido {mentioned_user.username} do grupo do suporte.")
@@ -561,7 +561,7 @@ async def remover_financeiro(update: Update, context: ContextTypes.DEFAULT_TYPE)
         # Verificar se o usuário que está executando a ação tem permissão para executar a ação
         if await check_group_role(update.message.from_user.id, group_id, context):
             async with httpx.AsyncClient() as client:
-                delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}/financeiro_group')
+                delete_response = await client.delete(f'http://api:3002/api/usuarios/{user_id}/financeiro_group')
 
                 if delete_response.status_code == 200:
                     await update.message.reply_text(f"Removido {mentioned_user.username} do grupo do financeiro.")
@@ -587,7 +587,7 @@ async def remover_tecnicos(update: Update, context: ContextTypes.DEFAULT_TYPE) -
         # Verificar se o usuário que está executando a ação tem permissão para executar a ação
         if await check_group_role(update.message.from_user.id, group_id, context):
             async with httpx.AsyncClient() as client:
-                delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}/tecnicos_group')
+                delete_response = await client.delete(f'http://api:3002/api/usuarios/{user_id}/tecnicos_group')
 
                 if delete_response.status_code == 200:
                     await update.message.reply_text(f"Removido {mentioned_user.username} do grupo dos técnicos.")
@@ -614,7 +614,7 @@ async def remover_fusao(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
         # Verificar se o usuário que está executando a ação tem permissão para executar a ação
         if await check_group_role(update.message.from_user.id, group_id, context):
             async with httpx.AsyncClient() as client:
-                delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}/fusao_group')
+                delete_response = await client.delete(f'http://api:3002/api/usuarios/{user_id}/fusao_group')
 
                 if delete_response.status_code == 200:
                     await update.message.reply_text(f"Removido {mentioned_user.username} do grupo da fusão.")
@@ -640,7 +640,7 @@ async def remover_comercial(update: Update, context: ContextTypes.DEFAULT_TYPE) 
         # Verificar se o usuário que está executando a ação tem permissão para executar a ação
         if await check_group_role(update.message.from_user.id, group_id, context):
             async with httpx.AsyncClient() as client:
-                delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}/comercial_group')
+                delete_response = await client.delete(f'http://api:3002/api/usuarios/{user_id}/comercial_group')
 
                 if delete_response.status_code == 200:
                     await update.message.reply_text(f"Removido {mentioned_user.username} do grupo do comercial.")
@@ -665,7 +665,7 @@ async def remover_almoxarifado(update: Update, context: ContextTypes.DEFAULT_TYP
         # Verificar se o usuário que está executando a ação tem permissão para executar a ação
         if await check_group_role(update.message.from_user.id, group_id, context):
             async with httpx.AsyncClient() as client:
-                delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}/almoxarifado_group')
+                delete_response = await client.delete(f'http://api:3002/api/usuarios/{user_id}/almoxarifado_group')
 
                 if delete_response.status_code == 200:
                     await update.message.reply_text(f"Removido {mentioned_user.username} do grupo do almoxarifado.")
@@ -690,7 +690,7 @@ async def remover_administrativo(update: Update, context: ContextTypes.DEFAULT_T
         # Verificar se o usuário que está executando a ação tem permissão para executar a ação
         if await check_group_role(update.message.from_user.id, group_id, context):
             async with httpx.AsyncClient() as client:
-                delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}/administrativo_group')
+                delete_response = await client.delete(f'http://api:3002/api/usuarios/{user_id}/administrativo_group')
 
                 if delete_response.status_code == 200:
                     await update.message.reply_text(f"Removido {mentioned_user.username} do grupo do administrativo.")
@@ -715,7 +715,7 @@ async def remover_ti(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
         # Verificar se o usuário que está executando a ação tem permissão para executar a ação
         if await check_group_role(update.message.from_user.id, group_id, context):
             async with httpx.AsyncClient() as client:
-                delete_response = await client.delete(f'http://localhost:3002/api/usuarios/{user_id}/ti_group')
+                delete_response = await client.delete(f'http://api:3002/api/usuarios/{user_id}/ti_group')
 
                 if delete_response.status_code == 200:
                     await update.message.reply_text(f"Removido {mentioned_user.username} do grupo do Ti.")
