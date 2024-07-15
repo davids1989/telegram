@@ -10,7 +10,7 @@ WORKDIR /app/telegram
 # Copiar arquivos de dependências e instalar
 RUN npm install express mysql
 
-COPY package*.json ./
+COPY package*.json ./api
 
 
 # Copiar o código da API
@@ -26,7 +26,7 @@ FROM python:3.9-slim AS python_base
 WORKDIR /app/telegram
 
 # Copiar arquivos de dependências do bot
-COPY requirements.txt ./
+COPY requirements.txt ./bot
 
 # Instalar dependências do bot
 RUN pip install -r requirements.txt
