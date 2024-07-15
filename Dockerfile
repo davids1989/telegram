@@ -2,10 +2,10 @@
 FROM node:18.18.0 AS node_base
 
 # Criar e definir permissões no diretório de trabalho
-RUN mkdir -p /app/telegram && chown -R node:node /app/telegram
+RUN mkdir -p /app/telegram/api/node_modules && chown -R node:node /app/telegram/api
 
 # Definir o diretório de trabalho
-WORKDIR /app/telegram
+WORKDIR /app/telegram/api
 
 # Copiar arquivos de dependências e instalar
 RUN npm install express mysql
