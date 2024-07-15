@@ -1,0 +1,19 @@
+# Dockerfile-bot
+
+# Usar uma imagem base oficial do Python
+FROM python:3.9-slim
+
+# Definir o diretório de trabalho
+WORKDIR /app/telegram/bot
+
+# Copiar arquivos de dependências do bot
+COPY bot/requirements.txt .
+
+# Instalar dependências do bot
+RUN pip install -r requirements.txt
+
+# Copiar o código do bot
+COPY bot/ .
+
+# Comando para rodar o bot
+CMD ["python", "teletriade3.py"]

@@ -1,0 +1,23 @@
+# Dockerfile-api
+
+# Usar uma imagem base oficial do Node.js
+FROM node:18.18.0
+
+# Criar e definir permissões no diretório de trabalho
+RUN mkdir -p /app/telegram/api/node_modules && chown -R node:node /app/telegram/api
+
+# Definir o diretório de trabalho
+WORKDIR /app/telegram/api
+
+# Copiar arquivos de dependências e instalar
+COPY api/package*.json ./
+RUN npm install
+
+# Copiar o código da API
+COPY api/ .
+
+# Expor a porta da API
+EXPOSE 3002
+
+# Comando para rodar a API
+CMD ["node", "teletriade.js"]
