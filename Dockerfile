@@ -23,10 +23,10 @@ EXPOSE 3002
 # Usar uma imagem base oficial do Python
 FROM python:3.9-slim AS python_base
 
-WORKDIR /app/telegram
+WORKDIR /app/telegram/bot
 
 # Copiar arquivos de dependências do bot
-COPY requirements.txt /bot
+COPY requirements.txt ./bot
 
 # Instalar dependências do bot
 RUN pip install -r requirements.txt
