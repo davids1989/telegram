@@ -1,22 +1,14 @@
 version: '3'
 services:
-  api:
+  triade:
     build: .
-    command: "node teletriade.js"
+    command: ["bash", "-c", "node api/teletriade.js & python bot/teletriade.py"]
     environment:
       - NODE_ENV=production
     expose:
       - "3002"
     ports:
       - "3002:3002"
-    networks:
-      - rede-triade
-    restart: always
-    
-    
-  bot:
-    build: .
-    command: ["bash", "-c", "sleep 30 && python teletriade.py"]
     networks:
       - rede-triade
     restart: always
