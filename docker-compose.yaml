@@ -3,7 +3,6 @@ services:
   api:
     build: .
     command: "node teletriade.js"
-    working_dir: /app/telegram/api
     environment:
       - NODE_ENV=production
     expose:
@@ -17,9 +16,9 @@ services:
   bot:
     build: .
     command: "python teletriade.py"
-    working_dir: /app/telegram/bot
     depends_on:
-      - api
+      api:
+        condition: service_healthy
     networks:
       - rede-triade
     restart: always
