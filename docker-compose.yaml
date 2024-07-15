@@ -12,16 +12,10 @@ services:
     networks:
       - rede-triade
     restart: always
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3002"]
-      interval: 1m
-      timeout: 10s
-      retries: 3
-      start_period: 1m
-
+    
   bot:
     build: .
-    command: "python teletriade.py"
+    command: ["bash", "-c", "sleep 30 && python teletriade.py"]
     depends_on:
       api:
         condition: service_healthy
