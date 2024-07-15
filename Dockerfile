@@ -37,8 +37,6 @@ COPY . .
 # Final stage
 FROM node:18.18.0
 
-WORKDIR /app/telegram
-
 # Copiar a construção da API
 COPY --from=node_base /app/telegram/api /app/telegram/api
 
