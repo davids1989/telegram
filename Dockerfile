@@ -26,7 +26,7 @@ FROM python:3.9-slim AS python_base
 WORKDIR /app/telegram
 
 # Copiar arquivos de dependências do bot
-COPY requirements.txt ./bot
+COPY requirements.txt /bot
 
 # Instalar dependências do bot
 RUN pip install -r requirements.txt
