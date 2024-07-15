@@ -1,9 +1,8 @@
-# docker-compose.yml
 version: '3'
 services:
   api:
     build: .
-    command: "npm run start"
+    command: "node teletriade.js"
     working_dir: /app/telegram/api
     environment:
       - NODE_ENV=production
@@ -12,15 +11,18 @@ services:
     ports:
       - "3002:3002"
     networks:
-      - rede-triade:
+      - rede-triade
     restart: always
+
   bot:
     build: .
+    command: "python teletriade.py"
+    working_dir: /app/telegram/bot
     depends_on:
       - api
     networks:
-      - rede-triade:
-    
+      - rede-triade
+    restart: always
 
 networks:
   rede-triade:

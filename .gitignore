@@ -2,3 +2,4 @@ venv
 node_modules
 teletriade3 copy.py
 teletriade copy.js
+package-lock.json

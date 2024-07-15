@@ -1,55 +1,47 @@
+# Usar uma imagem base oficial do Node.js
 FROM node:18.18.0 AS node_base
-FROM python:3.9-slim AS python_base
 
-# Etapa para construir e rodar a API
-FROM node_base AS api_builder
-
-RUN mkdir -p /app/telegram/api/node_modules && chown -R node:node /app/telegram/api
+# Criar e definir permissões no diretório de trabalho
+RUN mkdir -p /app/telegram/api && chown -R node:node /app/telegram/api
 
 # Definir o diretório de trabalho
 WORKDIR /app/telegram/api
 
-# Instalar as dependências
-RUN npm install express mysql
+# Copiar arquivos de dependências e instalar
+COPY ./api/package*.json ./
+RUN npm install
 
-COPY package*.json ./
+# Copiar o código da API
+COPY ./api .
 
-COPY --chown=node:node . .
-
-# Expor a porta 3002
+# Expor a porta da API
 EXPOSE 3002
 
-# Definir o comando para executar o aplicativo
+# Comando para rodar a API
 CMD ["node", "teletriade.js"]
 
-# Etapa para construir e rodar o bot
-FROM python_base AS bot_builder
+# Usar uma imagem base oficial do Python
+FROM python:3.9-slim AS python_base
 
 WORKDIR /app/telegram/bot
 
-# Copiar arquivos do bot
-COPY ./app/telegram/requirements.txt ./
+# Copiar arquivos de dependências do bot
+COPY ./bot/requirements.txt ./
 
 # Instalar dependências do bot
 RUN pip install -r requirements.txt
 
-# Copiar código do bot
-COPY ./app/telegram/bot .
+# Copiar o código do bot
+COPY ./bot .
 
 # Comando para rodar o bot
 CMD ["python", "teletriade.py"]
 
 # Multi-stage build para juntar ambas as partes
-FROM node_base
+FROM node:18.18.0
 
 # Copiar a construção da API
-COPY --from=api_builder /app/telegram/api /app/telegram/api
+COPY --from=node_base /app/telegram/api /app/telegram/api
 
 # Copiar a construção do bot
-COPY --from=bot_builder /app/telegram/bot /app/telegram/bot
-
-# Expor a porta da API
-EXPOSE 3002
-
-# Comando para rodar ambos: API e bot
-CMD ["sh", "-c", "npm start --prefix /app/telegram/api & python /app/telegram/bot/teletriade3.py"]
+COPY --from=python_base /app/telegram/bot /app/telegram/bot
