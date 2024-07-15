@@ -9,7 +9,7 @@ WORKDIR /app/telegram/api
 
 # Copiar arquivos de dependências e instalar
 COPY ./api/package*.json ./
-RUN npm install
+RUN npm install express mysql
 
 # Copiar o código da API
 COPY ./api .
