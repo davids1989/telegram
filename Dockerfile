@@ -17,7 +17,9 @@ COPY api/. api/
 
 # Copy requirements.txt and install dependencies for the bot
 COPY bot/requirements.txt bot/
-RUN pip install -r bot/requirements.txt
+RUN apk add --no-cache --virtual .build-deps gcc libffi-dev musl-dev openssl-dev python3-dev cargo && \
+    pip3 install --no-cache-dir -r bot/requirements.txt && \
+    apk del .build-deps
 
 # Copy the bot code
 COPY bot/. bot/
@@ -26,4 +28,4 @@ COPY bot/. bot/
 EXPOSE 3002
 
 # Command to run both the API and bot
-CMD ["bash", "-c", "node api/teletriade.js & python bot/teletriade.py"]
+CMD ["bash", "-c", "node api/teletriade.js & python3 bot/teletriade.py"]
