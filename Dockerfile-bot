@@ -1,7 +1,7 @@
 # Dockerfile-bot
 
-# Usar uma imagem base oficial do Python
-FROM python:3.9-slim
+# Usar uma imagem base oficial do Python Alpine
+FROM python:3.9-alpine
 
 # Definir o diretório de trabalho
 WORKDIR /app/telegram/bot
@@ -10,7 +10,9 @@ WORKDIR /app/telegram/bot
 COPY bot/requirements.txt .
 
 # Instalar dependências do bot
-RUN pip install --no-cache-dir -r requirements.txt
+RUN apk add --no-cache --virtual .build-deps gcc musl-dev && \
+    pip install --no-cache-dir -r requirements.txt && \
+    apk del .build-deps
 
 # Copiar o código do bot
 COPY bot/ .

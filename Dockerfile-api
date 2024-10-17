@@ -1,7 +1,7 @@
 # Dockerfile-api
 
-# Usar uma imagem base oficial do Node.js
-FROM node:18.18.0
+# Usar uma imagem base oficial do Node.js Alpine
+FROM node:18.18.0-alpine
 
 # Criar e definir permissões no diretório de trabalho
 RUN mkdir -p /app/telegram/api/node_modules && chown -R node:node /app/telegram/api
@@ -9,9 +9,11 @@ RUN mkdir -p /app/telegram/api/node_modules && chown -R node:node /app/telegram/
 # Definir o diretório de trabalho
 WORKDIR /app/telegram/api
 
-# Copiar arquivos de dependências e instalar
+# Copiar arquivos de dependências
 COPY api/package*.json ./
-RUN npm install
+
+# Instalar as dependências
+RUN npm install --production --silent
 
 # Copiar o código da API
 COPY api/ .
