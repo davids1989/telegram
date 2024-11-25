@@ -11,7 +11,7 @@ const connection = mysql.createPool({
   connectionLimit: 10,
   host: '38.156.3.9',
   port: 3306,
-  user: 'david',
+  user: 'root',
   password: 'Tri@#102030',
   database: 'telegram',
 });

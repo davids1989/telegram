@@ -49,7 +49,7 @@ async def mencionar_suporte(update: Update, context: ContextTypes.DEFAULT_TYPE) 
     
    # Fazer uma solicitação HTTP para a API
     async with httpx.AsyncClient() as client:
-        response = await client.get('http://telegram-bot-api-1:3002/api/usuarios/')
+        response = await client.get('http://38.156.3.9:3002/api/usuarios/')
 
     # Verificar se a solicitação foi bem-sucedida (código de status 200)
     if response.status_code == 200:
