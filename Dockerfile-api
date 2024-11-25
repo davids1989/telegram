@@ -13,7 +13,7 @@ WORKDIR /app/telegram/api
 COPY api/package*.json ./
 
 # Instalar as dependências
-RUN npm install --production --silent mysql2
+RUN npm install --production --silent --mysql2
 
 # Copiar o código da API
 COPY api/ .
