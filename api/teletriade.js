@@ -2,11 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mysql = require('mysql2');
 
-
-
-const app = express();
-app.use(bodyParser.json());
-
 const connection = mysql.createPool({
   connectionLimit: 10,
   host: 'mysql',
@@ -15,6 +10,13 @@ const connection = mysql.createPool({
   password: 'Tri@#102030',
   database: 'telegram',
 });
+
+
+
+const express = require('express');
+const app = express();
+app.use(express.json());
+
 
 // API PARA O TELEGRAM
 
