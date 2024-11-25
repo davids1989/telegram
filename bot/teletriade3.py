@@ -736,7 +736,7 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
 def main() -> None:
     """Run the bot."""
     # Create the Application and pass it your bot's token.
-    application = Application.builder().token("6473614239:AAHtG7dot5Zr5njx48eIL1YrewkkjyRn3to").build()
+    application = Application.builder().token("7906537668:AAG-cwINseV48YaXIfgklJUUyF6lqTPHR3s").build()
 
     application.add_handler(CommandHandler("mencionar_suporte", mencionar_suporte))
     application.add_handler(CommandHandler("mencionar_financeiro", mencionar_financeiro))
